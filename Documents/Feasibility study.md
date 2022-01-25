@@ -8,10 +8,10 @@ Types de jeux :
 
 Nature des mini-jeux : 
 - Jeux court
-- Jeux amusants avec l'alcool (prendre en compte l'alcoolémie potentiel)
-- Jeux de réflexes 
+- Jeux amusants avec l'alcool (prendre en compte l'alcoolémie potentielle)
+- Jeux de réflexes
 - Jeux de stratégie / rélflexion
-- Jeux de culture 
+- Jeux de culture
 - Jeux d'images
 - Jeux de son / musique
 
@@ -24,6 +24,8 @@ Idées de jeux :
 - Reconnaitre ce qu'il y a sur une image
 - Blindtest
 
-Début du CDC : 
-- Possiblité de jouer sur téléphone et PC
-- Possiblité de choisir un projet "Sans alcool (mode ange)"
+Début du CDC :
+- Possibilité de jouer sur téléphone (et PC ?)
+- Possibilité de choisir un projet "Sans alcool (mode ange)"
+- Possibilité de rentrer la liste des alcools disponibles
+- Classement général de tous les joueurs
