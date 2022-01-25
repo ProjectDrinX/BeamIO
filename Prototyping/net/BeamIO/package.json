@@ -1,0 +1,15 @@
+{
+  "name": "beamio",
+  "version": "0.0.0",
+  "description": "Fastest web-friendly networking library",
+  "main": "main.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "keywords": [
+    "networking",
+    "websocket"
+  ],
+  "author": "Mathieu Colmon",
+  "license": "ISC"
+}
