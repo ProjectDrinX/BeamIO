@@ -1,4 +1,4 @@
-## Etude de faisabilité
+## Etude de faisabilité (Brainstorming pour le moment)
 
 Types de jeux : 
 - Jeux individuels 
@@ -23,3 +23,7 @@ Idées de jeux :
 - Trouver la classe d'une personne à partir de variables (redoublement, déscolarisation etc)
 - Reconnaitre ce qu'il y a sur une image
 - Blindtest
+
+Début du CDC : 
+- Possiblité de jouer sur téléphone et PC
+- Possiblité de choisir un projet "Sans alcool (mode ange)"
