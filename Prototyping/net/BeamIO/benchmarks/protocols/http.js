@@ -4,15 +4,17 @@ module.exports = {
   name: 'HTTP',
 
   initServer() {
-    this.listeners = [];
-    this.server = http.createServer((req, res) => {
-      const payName = req.url.replace(/\//g, '');
-      if (this.listeners[payName]) this.listeners[payName]();
-      res.writeHead(200);
-      res.end('OK');
+    return new Promise((cb) => {
+      this.listeners = [];
+      this.server = http.createServer((req, res) => {
+        const payName = req.url.replace(/\//g, '');
+        if (this.listeners[payName]) this.listeners[payName]();
+        res.writeHead(200);
+        res.end('OK');
+      });
+      
+      this.server.listen(3000, () => { cb(); });
     });
-
-    this.server.listen(3000);
   },
 
   initClient() {

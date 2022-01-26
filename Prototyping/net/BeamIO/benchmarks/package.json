@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "socket.io": "^4.4.1",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.4.1",
+    "websocket": "^1.0.34",
+    "ws": "^8.4.2"
   }
 }

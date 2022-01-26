@@ -64,6 +64,8 @@ const errorResults = {};
         timeResults[valName][protocol.name] = `${result[valName]} ms`;
       }
     }
+
+    console.log();
   }
 
   const payTable = {};
