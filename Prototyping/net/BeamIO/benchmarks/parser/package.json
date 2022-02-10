@@ -1,0 +1,11 @@
+{
+  "name": "beamio-protocol-benchmarks",
+  "version": "0.0.0",
+  "description": "",
+  "main": "run.js",
+  "scripts": {
+    "test": "node run"
+  },
+  "author": "Mathieu Colmon",
+  "license": "ISC"
+}

@@ -1,4 +1,5 @@
-const Formatter = require('../src/formatter');
+import { TYPES } from '../lib/src/formatter';
+import Formatter from '../lib/src/formatter';
 
 const formatter = new Formatter({
   typeChecking: true,
@@ -6,9 +7,9 @@ const formatter = new Formatter({
 });
 
 const STRUCTURE = {
-  name: Formatter.TYPES.String,
-  count: Formatter.TYPES.Number,
-  isUser: Formatter.TYPES.Boolean,
+  name: TYPES.String,
+  count: TYPES.Number,
+  isUser: TYPES.Boolean,
 };
 
 const DATA = {
@@ -20,8 +21,8 @@ const DATA = {
 console.log('Structure:\n', STRUCTURE);
 console.log('Data:\n', DATA);
 
-const formatted = formatter.format(STRUCTURE, DATA);
-console.log('Formatted ->\n', formatted);
+const formattedData = formatter.format(STRUCTURE, DATA);
+console.log('Formatted ->\n', formattedData);
 
-const parsed = formatter.parse(STRUCTURE, formatted);
-console.log('Parsed ->\n', parsed);
+const parsedData = formatter.parse(STRUCTURE, formattedData);
+console.log('Parsed ->\n', parsedData);

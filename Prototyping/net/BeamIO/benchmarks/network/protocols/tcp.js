@@ -24,8 +24,7 @@ module.exports = {
             spi = stack.indexOf('\0');
           }
         });
-      })
-      .listen(3000, () => { cb(); });
+      }).listen(3000, () => { cb(); });
     });
   },
 

@@ -15,7 +15,7 @@ module.exports = {
         this.mainClient = c;
         cb();
       });
-    })
+    });
   },
 
   test(payload) {

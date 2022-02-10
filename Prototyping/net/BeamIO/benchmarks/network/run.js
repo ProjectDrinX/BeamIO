@@ -1,14 +1,19 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 const fs = require('fs');
 
 const protocols = fs.readdirSync('./protocols').filter((f) => f.endsWith('.js')).map((f) => require(`./protocols/${f}`));
 const payloads = fs.readdirSync('./payloads').filter((f) => f.endsWith('.js')).map((f) => require(`./payloads/${f}`));
 
-console.log('Payloads:')
-payloads.forEach((payload) => {
-  payload.repeat = payload.repeat ?? 1;
-  payload.length = JSON.stringify(payload.value).length / 1000;
-  console.log(` - ${payload.name}: ${payload.repeat} x ${payload.length} kB`);
-});
+console.log('Payloads:');
+for (const p of payloads) {
+  p.repeat = p.repeat ?? 1;
+  p.length = JSON.stringify(p.value).length / 1000;
+  console.log(` - ${p.name}: ${p.repeat} x ${p.length} kB`);
+}
 
 console.log();
 
@@ -59,7 +64,7 @@ const errorResults = {};
         timeResults[valName][protocol.name] = `${result[valName]} ms`;
         bandwidthResults[valName][protocol.name] = `${Math.round(bandwidth * 1000) / 1000} MB/s`;
         reqPerSecResults[valName][protocol.name] = `${Math.round(reqPerMs * 1000)} Req/s`;
-        errorResults[valName][protocol.name] = `${Math.round(payload.errors / payload.repeat * 1000) / 10} %`;
+        errorResults[valName][protocol.name] = `${Math.round((payload.errors / payload.repeat) * 1000) / 10} %`;
       } else {
         timeResults[valName][protocol.name] = `${result[valName]} ms`;
       }
@@ -69,21 +74,23 @@ const errorResults = {};
   }
 
   const payTable = {};
-  payloads.forEach((p) => payTable[p.name] = ({
-    Length: `${Math.round(p.length * 100) / 100} kB`,
-    Repeat: p.repeat,
-    Total: `${Math.round(p.length * p.repeat * 100) / 100} kB`,
-  }));
+  payloads.forEach((p) => {
+    payTable[p.name] = ({
+      Length: `${Math.round(p.length * 100) / 100} kB`,
+      Repeat: p.repeat,
+      Total: `${Math.round(p.length * p.repeat * 100) / 100} kB`,
+    });
+  });
 
   console.log('======== Payloads ========');
   console.table(payTable);
-  
+
   console.log('======== Errored requests ========');
   console.table(errorResults);
 
   console.log('======== Time results ========');
   console.table(timeResults);
-  
+
   console.log('======== Bandwidth results ========');
   console.table(bandwidthResults);
 

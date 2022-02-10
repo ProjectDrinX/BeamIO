@@ -1,39 +1,28 @@
-module.exports.number = {
-  /**
-   * @param {number} nbr
-   * @returns {string}
-   */
-  encode(nbr) {
+const number = {
+  encode(nbr: number): string {
     let hex = nbr.toString(16);
     if (hex.length % 2 !== 0) hex = `0${hex}`;
-  
+
     let rs = '';
     for (let i = 0; i < hex.length; i += 2) {
       rs += String.fromCharCode(parseInt(hex[i], 16) * 16 + parseInt(hex[i + 1], 16));
     }
-  
+
     return rs;
   },
-  /**
-   * @param {string} hex
-   * @returns {number}
-   */
-  decode(hex) {
+
+  decode(hex: string): number {
     let nbr = 0;
     for (let i = hex.length - 1; i >= 0; i -= 1) {
-      nbr += hex.charCodeAt(i) * 256 **(hex.length - i - 1);
+      nbr += hex.charCodeAt(i) * 256 ** (hex.length - i - 1);
     }
-  
+
     return nbr;
   },
 };
 
-module.exports.boolList = {
-  /**
-   * @param {boolean[]} bools
-   * @returns {string}
-   */
-  encode(bools) {
+const boolList = {
+  encode(bools: boolean[]): string {
     let hex = '';
     let i = 7;
     let n = 0;
@@ -41,7 +30,7 @@ module.exports.boolList = {
       if (b) n += 2 ** i;
 
       if (i === 0) {
-        hex += String.fromCharCode(n)
+        hex += String.fromCharCode(n);
         i = 7;
         n = 0;
       } else i -= 1;
@@ -51,12 +40,8 @@ module.exports.boolList = {
 
     return hex || '\0';
   },
-  
-  /**
-   * @param {string} hex
-   * @returns {boolean[]}
-   */
-  decode(hex) {
+
+  decode(hex: string): boolean[] {
     const bools = [];
     for (let i = 0; i < hex.length; i += 1) {
       let n = hex.charCodeAt(i);
@@ -68,5 +53,7 @@ module.exports.boolList = {
     }
 
     return bools;
-  }
-}
+  },
+};
+
+export default { number, boolList };

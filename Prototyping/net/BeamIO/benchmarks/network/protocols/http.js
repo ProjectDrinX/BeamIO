@@ -2,6 +2,7 @@ const http = require('http');
 
 module.exports = {
   name: 'HTTP',
+  errors: 0,
 
   initServer() {
     return new Promise((cb) => {
@@ -12,18 +13,16 @@ module.exports = {
         res.writeHead(200);
         res.end('OK');
       });
-      
+
       this.server.listen(3000, () => { cb(); });
     });
   },
 
-  initClient() {
-    return;
-  },
+  initClient() {},
 
   test(payload) {
     return new Promise((cb) => {
-      let errors = 0;
+      this.errors = 0;
 
       for (let i = 0; i < payload.repeat; i += 1) {
         const req = http.request({
@@ -34,16 +33,17 @@ module.exports = {
         });
 
         req.on('error', () => {
-          errors += 1;
+          this.errors += 1;
           this.listeners[payload.name]();
         });
+
         req.end(JSON.stringify(payload.value));
       }
 
       let n = 0;
       this.listeners[payload.name] = () => {
         n += 1;
-        if (n === payload.repeat) cb(errors);
+        if (n === payload.repeat) cb(this.errors);
       };
     });
   },

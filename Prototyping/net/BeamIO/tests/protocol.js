@@ -1,4 +1,4 @@
-const Protocol = require('../src/protocol');
+import Protocol from '../src/protocol';
 
 function randomArray(len1 = 10000, len2 = 40) {
   const arr = [];

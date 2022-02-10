@@ -1,10 +1,10 @@
 {
-  "name": "beamio-benchmarks",
-  "version": "1.0.0",
+  "name": "beamio-network-benchmarks",
+  "version": "0.0.0",
   "description": "",
-  "main": "benchmark.js",
+  "main": "run.js",
   "scripts": {
-    "test": "node benchmark"
+    "test": "node run"
   },
   "author": "Mathieu Colmon",
   "license": "ISC",

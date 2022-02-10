@@ -2,6 +2,7 @@ const udp = require('dgram');
 
 module.exports = {
   name: 'UDP',
+  errors: 0,
 
   initServer() {
     return new Promise((cb) => {
@@ -38,18 +39,18 @@ module.exports = {
 
   test(payload) {
     return new Promise((cb) => {
-      let errors = 0;
+      this.errors = 0;
 
       for (let i = 0; i < payload.repeat; i += 1) {
-        let data = JSON.stringify([payload.name, payload.value]) + '\0';
+        let data = `${JSON.stringify([payload.name, payload.value])}\0`;
 
         while (data.length) {
           const chunk = data.slice(0, 65507);
-          this.client.send(chunk, 3000, 'localhost', (e) => { if (e) errors += 1; });
+          this.client.send(chunk, 3000, 'localhost', (e) => { if (e) this.errors += 1; });
           data = data.slice(65507);
 
           setTimeout(() => {
-            this.client.send('\0', 3000, 'localhost', (e) => { if (e) errors += 1; });
+            this.client.send('\0', 3000, 'localhost', (e) => { if (e) this.errors += 1; });
           }, 1000);
         }
       }
@@ -57,12 +58,12 @@ module.exports = {
       let n = 0;
       this.listeners[payload.name] = () => {
         n += 1;
-        if (n === payload.repeat) cb(errors);
+        if (n === payload.repeat) cb(this.errors);
         setTimeout(() => { cb(payload.repeat); }, 1000);
       };
 
       this.listeners.$ERROR = () => {
-        errors += 1;
+        this.errors += 1;
         this.listeners[payload.name]();
       };
     });

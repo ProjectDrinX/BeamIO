@@ -1,46 +1,58 @@
-function getFirstConsCharIndex(char = '', text = '', i = 0) {
+function getFirstConsCharIndex(char = '', text = '', index = 0) {
+  let i = index;
   while (text[i] === char) i -= 1;
   return i + 1;
 }
 
-class Protocol {
-  /**
-   * @typedef {Object} ProtocolConfig
-   * @prop {string} CHAR_MAIN_SEP Main separator char
-   * @prop {string} CHAR_ESCAPE Escape char
-   */
+interface ProtocolConfig {
+  /** Main separator char */
+  CHAR_MAIN_SEP: string,
+  /** Escape char */
+  CHAR_ESCAPE: string,
+}
 
-  /** @type {ProtocolConfig} */
-  #config = {
+interface ProtocolConfigurator {
+  /** Main separator char */
+  CHAR_MAIN_SEP?: string,
+  /** Escape char */
+  CHAR_ESCAPE?: string,
+}
+
+class Protocol {
+  #config: ProtocolConfig = {
     CHAR_MAIN_SEP: '\x30',
     CHAR_ESCAPE: '\x31',
   };
 
-  get config() {
+  get config(): ProtocolConfig {
     return this.#config;
   }
 
+  #encodeRawRegex: RegExp;
+
+  #decodeRawRegex: RegExp;
+
   /**
-   * @param {ProtocolConfig} config Protocol config
+   * @param {ProtocolConfigurator} config Protocol config
    */
-  constructor(config = {}) {
+  constructor(config: ProtocolConfigurator = {}) {
     if (config.CHAR_MAIN_SEP) this.#config.CHAR_MAIN_SEP = config.CHAR_MAIN_SEP;
     if (config.CHAR_ESCAPE) this.#config.CHAR_ESCAPE = config.CHAR_ESCAPE;
 
-    this.encodeRawRegex = RegExp(`${this.#config.CHAR_ESCAPE}|${this.#config.CHAR_MAIN_SEP}`, 'g');
-    this.decodeRawRegex = RegExp(`${this.#config.CHAR_ESCAPE}(${this.#config.CHAR_ESCAPE}|${this.#config.CHAR_MAIN_SEP})`, 'g');
+    this.#encodeRawRegex = RegExp(`${this.#config.CHAR_ESCAPE}|${this.#config.CHAR_MAIN_SEP}`, 'g');
+    this.#decodeRawRegex = RegExp(`${this.#config.CHAR_ESCAPE}(${this.#config.CHAR_ESCAPE}|${this.#config.CHAR_MAIN_SEP})`, 'g');
   }
 
-  encodeRaw(str = '') {
-    return str.replace(this.encodeRawRegex, `${this.#config.CHAR_ESCAPE}$&`);
+  encodeRaw(str: string = ''): string {
+    return str.replace(this.#encodeRawRegex, `${this.#config.CHAR_ESCAPE}$&`);
   }
 
-  decodeRaw(str = '') {
-    return str.replace(this.decodeRawRegex, '$1');
+  decodeRaw(str: string = ''): string {
+    return str.replace(this.#decodeRawRegex, '$1');
   }
 
   decode(packet = '') {
-    const salt = packet[0].charCodeAt();
+    const salt = packet[0].charCodeAt(0);
     const raw = packet
       .slice(1)
       .split('')
@@ -54,15 +66,18 @@ class Protocol {
 
     while (sp !== -1) {
       buff += raw.slice(cur, sp);
-      if (raw[sp - 1] !== this.#config.CHAR_ESCAPE || (getFirstConsCharIndex(this.#config.CHAR_ESCAPE, raw, sp - 2) % 2 === sp % 2)) {
+      if (
+        raw[sp - 1] !== this.#config.CHAR_ESCAPE
+        || (getFirstConsCharIndex(this.#config.CHAR_ESCAPE, raw, sp - 2) % 2 === sp % 2)
+      ) {
         decoded.push(this.decodeRaw(buff));
         buff = '';
       } else if (raw[sp - 1] === this.#config.CHAR_ESCAPE) buff += this.#config.CHAR_MAIN_SEP;
-  
+
       cur = sp + 1;
       sp = raw.indexOf(this.#config.CHAR_MAIN_SEP, cur);
     }
-  
+
     buff += raw.slice(cur);
     decoded.push(this.decodeRaw(buff));
     return decoded;
@@ -83,4 +98,4 @@ class Protocol {
   }
 }
 
-module.exports = Protocol;
+export default Protocol;

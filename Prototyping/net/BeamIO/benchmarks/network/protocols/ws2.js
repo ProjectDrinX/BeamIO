@@ -16,7 +16,7 @@ module.exports = {
         autoAcceptConnections: false,
       });
 
-      this.server.on('request', (req) => {   
+      this.server.on('request', (req) => {
         const sock = req.accept();
 
         sock.on('message', ({ utf8Data: raw }) => {
