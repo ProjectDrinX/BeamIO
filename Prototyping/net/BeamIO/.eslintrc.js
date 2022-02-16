@@ -6,6 +6,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,5 +18,6 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'import/extensions': ['error', 'ignorePackages', { ts: 'never' }],
   },
 };
