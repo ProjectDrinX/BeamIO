@@ -1,24 +1,29 @@
+import Protocol from './tests/protocol.test';
+import Formatter from './tests/formatter.test';
+
 // Launch tests
 
 try {
-  console.log('------ Test "protocol.ts" ------');
-  require('./tests/protocol');
+  console.log('------ Test "protocol.test.ts" ------');
+  Protocol();
 } catch (error) {
   console.error('============= TEST FAILED =============');
-  // @ts-ignore
-  console.error(` > ${error.message}`);
+  console.error(` > ${error}`);
+  console.error(error);
   console.error('=======================================\n');
+  // @ts-ignore
   process.exit(1);
 }
 
 try {
-  console.log('------ Test "formatter.ts" -----');
-  require('./tests/formatter');
+  console.log('------ Test "formatter.test.ts" -----');
+  Formatter();
 } catch (error) {
   console.error('============= TEST FAILED =============');
-  // @ts-ignore
-  console.error(` > ${error.message}`);
+  console.error(` > ${error}`);
+  console.error(error);
   console.error('=======================================\n');
+  // @ts-ignore
   process.exit(1);
 }
 

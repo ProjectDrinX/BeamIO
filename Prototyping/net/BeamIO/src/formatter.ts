@@ -1,18 +1,16 @@
 import encoder from './encoder';
 
-enum Type { 'string', 'number', 'boolean' }
+enum Type { 'String', 'Number', 'Boolean' };
 
 const SupportedTypes: { [t: string]: Type } = {
-  string: Type.string,
-  number: Type.number,
-  boolean: Type.boolean,
+  string: Type.String,
+  number: Type.Number,
+  boolean: Type.Boolean,
 };
 
 type Scheme = { [name: string]: Type };
 type Value = (string | number | boolean);
 type ObjData = { [key: string]: Value };
-
-console.log('types', Type);
 
 interface FormatterConfig {
   typeChecking: boolean,
@@ -27,18 +25,18 @@ interface FormatterConfigurator {
 }
 
 class Formatter {
-  #config: FormatterConfig = {
+  readonly config: FormatterConfig = {
     typeChecking: true,
     strictTyping: true,
   };
 
   constructor(config: FormatterConfigurator) {
-    if (config.typeChecking) this.#config.typeChecking = config.typeChecking;
-    if (config.strictTyping) this.#config.strictTyping = config.strictTyping;
+    if (config.typeChecking) this.config.typeChecking = config.typeChecking;
+    if (config.strictTyping) this.config.strictTyping = config.strictTyping;
   }
 
   checkType(type: Type, value: Value, key: string) {
-    if (type >= 0 && type <= 2) throw new Error(`Unsupported type: '${type}'.`);
+    if (type < 0 || type > 2) throw new Error(`Unsupported type: '${type}'.`);
     if (value === undefined) throw new Error(`Missing '${key}' property.`);
     if (SupportedTypes[typeof value] !== type) throw new Error(`Wrong '${key}' type: '${typeof value}'. Must be '${type}'.`);
     return;
@@ -49,18 +47,18 @@ class Formatter {
     const bools: boolean[] = [];
 
     Object.keys(scheme).forEach((k) => {
-      if (this.#config.typeChecking) this.checkType(scheme[k], data[k], k);
+      if (this.config.typeChecking) this.checkType(scheme[k], data[k], k);
 
       switch (scheme[k]) {
-        case Type.boolean:
+        case Type.Boolean:
           bools.push(data[k]);
           return;
 
-        case Type.string:
+        case Type.String:
           buf.push(data[k]);
           return;
 
-        case Type.number:
+        case Type.Number:
           buf.push(encoder.number.encode(data[k]));
           return;
       
@@ -71,7 +69,7 @@ class Formatter {
 
     buf.push(encoder.boolList.encode(bools));
 
-    if (this.#config.strictTyping) {
+    if (this.config.strictTyping) {
       Object.keys(data).forEach((k) => {
         if (scheme[k] === undefined) throw new Error(`Unwanted '${k}' property.`);
       });
@@ -90,17 +88,17 @@ class Formatter {
       if (chunks[i] === undefined) throw new Error(`Wrong chunk number (Can't get ${i})`);
 
       switch (scheme[k]) {
-        case Type.string:
+        case Type.String:
           data[k] = chunks[i];
           i += 1;
           break;
           
-        case Type.number:
+        case Type.Number:
           data[k] = encoder.number.decode(chunks[i]);
           i += 1;
           break;
 
-        case Type.boolean:
+        case Type.Boolean:
           boolKeys.push(k);
           break;
       

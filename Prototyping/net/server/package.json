@@ -1,14 +1,17 @@
 {
   "name": "netest",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "node test"
+    "test": "node main"
   },
   "keywords": [
     "network"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "beamio": "file:../BeamIO"
+  }
 }
