@@ -1,32 +1,24 @@
-import { BeamServer, Type } from 'beamio';
+import { BeamServer } from 'beamio';
+import * as Schemes from './main.sch';
 
-const BS = new BeamServer({ // Default values:
-  /** Server port */
+const BS = new BeamServer(Schemes, {
   port: 1010,
-  /**
-   * `true`: Throws an error when a request is already registred with this name
-   *
-   * `false`: Ignore registration
-   **/
-  strictRegister: true,
-});
-
-console.log('BeamServer', BS);
-
-// Declaring all the requests
-
-interface LoginRequestPacket { str: String, nbr: Number, boo: Boolean };
-
-BS.register('loginRequest', {
-  str: Type.String,
-  nbr: Type.Number,
-  boo: Type.Boolean,
 });
 
 // Events
 
 BS.on('connect', (user) => {
-  user.on('loginRequest', (data: LoginRequestPacket) => {
-    console.log('User login request:', data.str, data.nbr, data.boo);
-  });
+  // user.on('loginRequest', (data: typeof Schemes.loginRequest) => {
+  //   console.log('User login request:', data.username, data.password, data.nbr, data.boo);
+
+  //   user.emit('testRequest', {
+  //     boo: true,
+  //     str: 'testString',
+  //     nbr: 100,
+  //   } as typeof Schemes.testRequest);
+  // });
 });
+
+// Global methods
+
+// BS.broadcast('globalMessage', );

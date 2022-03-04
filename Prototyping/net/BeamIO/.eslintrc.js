@@ -18,6 +18,9 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'no-continue': 'off',
+    'no-restricted-syntax': 'off',
+    'guard-for-in': 'off',
     'import/extensions': ['error', 'ignorePackages', { ts: 'never' }],
   },
 };

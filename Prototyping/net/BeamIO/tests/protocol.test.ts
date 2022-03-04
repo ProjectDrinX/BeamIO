@@ -16,10 +16,16 @@ export default () => {
   const prot = new Protocol();
 
   const chunks = randomArray();
-  const encoded = prot.encode(chunks);
-  const parsed = prot.decode(encoded);
+  function* gen(a: any[] = []) { yield* a; }
 
-  chunks.forEach((v, i) => {
+  const encoded = prot.encode(gen(chunks));
+  const parsed = prot.decode({
+    hash: '0',
+    payload: encoded,
+  });
+
+  let i = 0;
+  for (const v of chunks) {
     if (v !== parsed[i]) {
       for (let i2 = 0; i2 < v.length; i2 += 1) {
         if (v[i2] !== parsed[i][i2]) {
@@ -31,6 +37,7 @@ export default () => {
       throw new Error(`Wrong result: '${v}' (${v.length}) -> '${parsed[i]}' (${parsed[i].length})`);
     }
 
-    if (i % 2000 === 0 || i === chunks.length - 1) console.log('Test n°', i, '-> OK');
-  });
+    if (i % 2000 === 0 || i === chunks.length - 1) console.log(`Test n°${i} -> OK`);
+    i += 1;
+  }
 };

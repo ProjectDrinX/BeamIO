@@ -1,6 +1,4 @@
-/* eslint-disable guard-for-in */
 /* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const fs = require('fs');

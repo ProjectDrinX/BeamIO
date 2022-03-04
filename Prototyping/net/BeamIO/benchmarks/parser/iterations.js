@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-restricted-syntax */
 const nbr = 100000000;
 
 {

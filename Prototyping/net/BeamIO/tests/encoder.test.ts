@@ -25,23 +25,42 @@ function testBool() {
   }
 }
 
-function testNumber() {
-  function testWith(n: number, mod: number) {
-    const encoded = Encoder.number.encode(n);
-    const decoded = Encoder.number.decode(encoded);
+function encodeCheck(n: number, showInfo = true) {
+  const encoded = Encoder.number.encode(n);
+  const decoded = Encoder.number.decode(encoded);
 
-    if (n !== decoded) throw new Error(`Wrong number value ${decoded} instead of ${n}`);
-    if (n % mod === 0) console.log(`with ${n}: OK`);
-  }
+  if (n !== decoded && !Number.isNaN(n)) throw new Error(`Wrong number value ${decoded} instead of ${n}`);
+  if (!showInfo) return;
 
-  for (let n = 0; n <= 100000; n += 1) testWith(n, 50000);
-  for (let n = 2; n < Infinity; n **= 2) testWith(n, 2);
+  const originLen = `${n}`.length;
+  const ratio = Math.round((1 - encoded.length / originLen) * 10000) / 100;
+  console.log(`with ${n}: [${originLen} -> ${encoded.length}] bit(s): Compression ratio: ${ratio}%`);
 }
 
 export default () => {
   console.log('Testing boolean encoding:');
   testBool();
 
-  console.log('\nTesting number encoding:');
-  testNumber();
+  console.log('\nTesting special number encoding:');
+  encodeCheck(0);
+  encodeCheck(-0);
+  encodeCheck(3e300);
+  encodeCheck(-3e300);
+  // eslint-disable-next-line no-loss-of-precision
+  encodeCheck(3e3000);
+  // eslint-disable-next-line no-loss-of-precision
+  encodeCheck(-3e3000);
+  encodeCheck(Infinity);
+  encodeCheck(-Infinity);
+  encodeCheck(NaN);
+
+  console.log('\nTesting integer encoding:');
+  for (let n = 0; n <= 100000; n += 1) encodeCheck(n, (n % 50000 === 0));
+  for (let n = 2; n < Infinity; n **= 2) encodeCheck(n, (n % 2 === 0));
+
+  console.log('\nTesting float encoding:');
+  for (let n = 0; n <= 100000; n += 1) {
+    const rnd = (Math.random() > 0.5 ? -1 : 1) * (Math.random() ** (Math.random() * 100));
+    encodeCheck(rnd, (n % 100000 === 0));
+  }
 };

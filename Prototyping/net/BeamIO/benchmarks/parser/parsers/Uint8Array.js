@@ -46,7 +46,7 @@ module.exports = {
 
         const arrBuff = array.map((s) => new Uint8Array(s.split('').map((c) => c.charCodeAt(0))));
         let rs = null;
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
+
         for (const c of arrBuff) {
           if (!rs) rs = this.encodeBuff(c);
           else rs = this.concatBuff(rs, this.encodeBuff(c));

@@ -14,7 +14,6 @@ module.exports = {
         const array = payload.value;
 
         let rs = '';
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const x in array) {
           const c = array[x];
 

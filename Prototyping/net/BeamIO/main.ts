@@ -1,2 +1,3 @@
-export { Type } from './src/formatter';
+export { Type } from './src/CompiledScheme';
 export * from './src/BeamServer';
+export * from './src/engine';

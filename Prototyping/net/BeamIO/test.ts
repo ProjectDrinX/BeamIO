@@ -1,6 +1,6 @@
 import Protocol from './tests/protocol.test';
-import Formatter from './tests/formatter.test';
 import Encoder from './tests/encoder.test';
+import Engine from './tests/engine.test';
 
 // Launch tests
 
@@ -29,8 +29,8 @@ try {
 }
 
 try {
-  console.log('------ Test "formatter.test.ts" -----');
-  Formatter();
+  console.log('------ Test "engine.test.ts" -----');
+  Engine();
 } catch (error) {
   console.error('============= TEST FAILED =============');
   console.error(` > ${error}`);
