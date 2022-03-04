@@ -1,7 +1,5 @@
 import { Type } from 'beamio';
 
-// export interface LoginRequestPacket { str: String, nbr: Number, boo: Boolean };
-
 export const loginRequest = {
   /** The account username */
   username: Type.String,
