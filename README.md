@@ -4,7 +4,7 @@
 
 # DrinX
 
-DrinX est un jeu d'alcool en ligne réalisé dans un cadre de la première année de CMI Informatique à l'université de Montpellier par [Mathieu Colmon](https://mathieu.colmon.com/) et [Antoine Seguin](https://antoine-seguin.fr).
+DrinX est un jeu d'alcool en ligne réalisé dans un cadre de la première année de CMI Informatique à l'université de Montpellier par [Mathieu Colmon](https://mathieu.colmon.fr/) et [Antoine Seguin](https://antoine-seguin.fr).
 
 
 ## Fonctionnement
