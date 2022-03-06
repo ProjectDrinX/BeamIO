@@ -8,6 +8,3 @@ node_modules/
 dist/
 .vscode
 .env
-package-lock.json
-yarn.lock
-
