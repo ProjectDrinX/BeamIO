@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn install --frozen-lockfile && yarn build
-        working-directory: ./Fontend/drinx-frontapp/
+        working-directory: Frontend/drinx-frontapp/
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
