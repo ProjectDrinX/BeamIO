@@ -16,6 +16,7 @@ jobs:
       - run: yarn install --frozen-lockfile && yarn build
         working-directory: Frontend/drinx-frontapp/
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        working-directory: Frontend/drinx-frontapp/
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_IRIDIUM_BLAST }}'
