@@ -16,7 +16,7 @@ Quand la partie est lancé, les joueurs s'affrontent sur des mini-jeux, en group
 Le jeu distribue ainsi des gages arrosés (ou non).
 ## Fonctionnalités principales
 
-- Jeu d'alcool sous format WEB *(TypeSript, HTML, CSS)* optimisé pour téléphones, tablettes et ordinateurs.
+- Jeu d'alcool sous format WEB *(TypeScript, HTML, CSS)* optimisé pour téléphones, tablettes et ordinateurs.
 - Utilisation d'une stack NodeJS et VueJS.
 - Utilisation de la librairie de networking BeamIO réalisé dans le cadre du projet.
 - Système de parties avec gestion des joueurs et des paramètres relatifs au jeu.
@@ -33,6 +33,6 @@ Le jeu distribue ainsi des gages arrosés (ou non).
 | Documents |  Ensemble des documents qui accompagnent le projet (rapports, cachier des charges...) |
 | Frontend | Ensemble des éléments visuels de DrinX (application frontend, ressources visuels...)
 | Backend | Application backend du jeu |
-| Prototyping | Prototypages de la librairie de networking BeamIO |
+| Prototyping | Ensemble de prototypes pour DrinX (librairie BeamIO...) |
 
 **Important :** les instructions relatives à l'utilisation et l'installation des applications frontend et backend sont donnés dans un fichier README consultable à la racine des apps. 
