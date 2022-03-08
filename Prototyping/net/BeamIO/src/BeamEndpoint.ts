@@ -1,22 +1,22 @@
 /* eslint-disable no-dupe-class-members */
 /* eslint-disable no-unused-vars */
 import type { WebSocket } from 'ws';
-import Engine from './engine';
+import type Engine from './engine';
 import type { Packet, RequestID } from './engine';
 import { DeepObject } from './CompiledScheme';
 
 export default class BeamEndpoint {
   socket: WebSocket;
 
-  engine: Engine;
+  private Engine: Engine;
 
-  callbacks: { [e: RequestID]: Function[] } = {
+  private callbacks: { [e: RequestID]: Function[] } = {
     disconnect: [],
   };
 
   constructor(socket: WebSocket, engine: Engine) {
     this.socket = socket;
-    this.engine = engine;
+    this.Engine = engine;
 
     let pingPayload = String.fromCharCode(Math.floor(Math.random() * 256));
     let pongPayload = '';
@@ -51,7 +51,7 @@ export default class BeamEndpoint {
       }
 
       try {
-        const rs = this.engine.parse(packet);
+        const rs = this.Engine.parse(packet);
 
         const cbs = this.callbacks[rs.id];
         if (!cbs || !cbs.length) return;
@@ -63,14 +63,14 @@ export default class BeamEndpoint {
   }
 
   /** When the client sends data */
-  on(event: string, callback: () => void): void;
+  on(event: string, callback: (data: any) => void): void;
 
   /** When the client disconnects */
   on(event: 'disconnect', callback: () => void): void;
 
   on(event: string, callback: Function) {
     if (!this.callbacks[event]) {
-      if (!this.engine.isRegistered(event)) throw new Error(`Invalid event name '${event}'.`);
+      if (!this.Engine.isRegistered(event)) throw new Error(`Invalid event name '${event}'.`);
       this.callbacks[event] = [];
     }
     this.callbacks[event].push(callback);
@@ -83,7 +83,7 @@ export default class BeamEndpoint {
    */
   emit(event: string, data: DeepObject): Promise<void> {
     return new Promise((cb, er) => {
-      this.socket.send(this.engine.serialize(event, data), (err) => {
+      this.socket.send(this.Engine.serialize(event, data), (err) => {
         if (!err) cb(); else er(err);
       });
     });
