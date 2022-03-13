@@ -1,4 +1,4 @@
-import { Type } from '../src/CompiledScheme';
+import { Type } from '../main';
 import type { DeepScheme, DeepObject } from '../src/CompiledScheme';
 import Engine from '../src/engine';
 import type { DeepSchemes } from '../src/engine';
