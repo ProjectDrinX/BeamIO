@@ -8,7 +8,7 @@ if (global.IMPORT_MSGS) console.log('<IMPORT: BeamServer.ts>');
 import { WebSocketServer } from 'ws';
 import type { IncomingMessage } from 'http';
 import type { ServerOptions as WSOptions } from 'ws';
-import Engine from './engine';
+import Engine, { Packet } from './engine';
 import BeamEndpoint from './BeamEndpoint';
 import type { DeepSchemes, EngineConfig } from './engine';
 import { DeepObject } from './CompiledScheme';
@@ -24,10 +24,11 @@ interface BeamServerConfig {
   engineOptions?: EngineConfig,
 }
 
-export class BeamServer {
+export default class {
   /** Socket Server instance */
   readonly SocketServer: WebSocketServer;
 
+  /** BeamEngine instance */
   readonly Engine: Engine;
 
   private callbacks: { [e: string]: Function[] } = {
@@ -46,17 +47,43 @@ export class BeamServer {
     console.log('Creating server', WSConfig);
 
     this.SocketServer = new WebSocketServer(WSConfig);
-
     this.SocketServer.on('connection', (socket, req) => {
-      const endpoint = new BeamEndpoint(socket, this.Engine);
-      const endpointID = this.lastEndpoint;
+      const endpoint = new BeamEndpoint(this.Engine, socket);
 
+      const endpointID = this.lastEndpoint;
       this.endpoints[endpointID] = endpoint;
 
       for (const f of this.callbacks.connect) f(endpoint, req);
 
-      socket.on('close', () => {
-        console.log('Deleting', endpointID);
+      let pingPayload = String.fromCharCode(Math.floor(Math.random() * 256));
+      let pongPayload = '';
+
+      endpoint.socket.send(`\xFF${pingPayload}`);
+
+      endpoint.socket.onmessage = (MessageEvent) => {
+        const raw = MessageEvent.data.toString();
+
+        const packet: Packet = {
+          hash: raw[0],
+          payload: raw.slice(1),
+        };
+
+        if (packet.hash === '\xFF') [pongPayload] = packet.payload;
+        else endpoint.receivePacket(packet);
+      };
+
+      const pingInterval = setInterval(() => {
+        if (pingPayload !== pongPayload) {
+          endpoint.close(4000, 'TIMEOUT');
+          return;
+        }
+
+        pingPayload = String.fromCharCode(Math.floor(Math.random() * 256));
+        endpoint.socket.send(`\xFF${pingPayload}`);
+      }, 5000);
+
+      endpoint.socket.on('close', () => {
+        clearInterval(pingInterval);
         delete this.endpoints[endpointID];
       });
 
@@ -88,5 +115,3 @@ export class BeamServer {
     });
   }
 }
-
-export default BeamServer;

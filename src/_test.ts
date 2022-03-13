@@ -1,5 +1,6 @@
 /* eslint-disable no-new */
-import CompiledScheme, { Type } from './CompiledScheme';
+import { Type } from '../main';
+import CompiledScheme from './CompiledScheme';
 
 {
   const n = 1000000;

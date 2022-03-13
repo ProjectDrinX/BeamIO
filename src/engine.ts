@@ -9,13 +9,13 @@ import type { DeepScheme, DeepObject } from './CompiledScheme';
 
 export interface DeepSchemes { [k: string]: DeepScheme }
 
-export type RequestHash = string;
+type RequestHash = string;
 export type RequestID = string;
 
-export interface RequestHashes { [id: RequestID]: RequestHash }
-export interface Requests { [id: RequestHash]: CompiledScheme }
+interface RequestHashes { [id: RequestID]: RequestHash }
+interface Requests { [id: RequestHash]: CompiledScheme }
 
-export interface Response {
+interface Response {
   hash: RequestHash,
   id: RequestID,
   data: DeepObject,

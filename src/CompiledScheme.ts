@@ -1,17 +1,11 @@
 // @ts-ignore
 if (global.IMPORT_MSGS) console.log('<IMPORT: CompiledScheme.ts>');
 /* eslint-disable import/first */
-
 import encoder from './encoder';
+import { Type } from '../main';
 
-export const Type = {
-  String: '',
-  Number: 0.0,
-  Boolean: false,
-};
-
-export type TType = (string | number | boolean);
-export type Value = (string | number | boolean);
+type TType = (string | number | boolean);
+type Value = (string | number | boolean);
 
 export interface DeepObject { [k: string]: (Value | DeepObject) }
 export interface DeepScheme { [k: string]: (TType | DeepScheme) }
@@ -72,7 +66,7 @@ function genParser(scheme: DeepScheme = {}, getter = false): [Parser, TType[]] {
 const GeneratorFunction = Object.getPrototypeOf(function* (){}).constructor;
 
 // eslint-disable-next-line no-unused-vars
-export type Stamper = (DeepObj: DeepObject) => Generator<[TType, Value]>;
+type Stamper = (DeepObj: DeepObject) => Generator<[TType, Value]>;
 
 function genStamper(scheme: DeepScheme = {}): [Stamper, boolean] {
   let code = '';
