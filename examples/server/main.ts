@@ -1,3 +1,6 @@
+// @ts-ignore
+global.IMPORT_MSGS = true;
+/* eslint-disable import/first */
 import { BeamServer } from 'beamio';
 import * as Schemes from './main.sch';
 
@@ -25,4 +28,4 @@ BS.broadcast('globalMessage', {
   str: 'hello',
   boo: true,
   nbr: 1234,
-} as typeof Schemes.testRequest);
+} as typeof Schemes.globalMessage);

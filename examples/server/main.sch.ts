@@ -11,4 +11,13 @@ export const loginRequest = {
   boo: Type.Boolean,
 };
 
+export const globalMessage = {
+  /** This is a string */
+  str: Type.String,
+  /** This is a number */
+  nbr: Type.Number,
+  /** This is a boolean */
+  boo: Type.Boolean,
+};
+
 export * from './test.sch';

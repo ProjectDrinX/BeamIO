@@ -1,3 +1,7 @@
+// @ts-ignore
+if (global.IMPORT_MSGS) console.log('<IMPORT: CompiledScheme.ts>');
+/* eslint-disable import/first */
+
 import encoder from './encoder';
 
 export const Type = {

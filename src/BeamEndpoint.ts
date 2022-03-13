@@ -1,3 +1,7 @@
+// @ts-ignore
+if (global.IMPORT_MSGS) console.log('<IMPORT: BeamEndpoint.ts>');
+/* eslint-disable import/first */
+
 /* eslint-disable no-dupe-class-members */
 /* eslint-disable no-unused-vars */
 import type { WebSocket } from 'ws';

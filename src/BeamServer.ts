@@ -1,3 +1,7 @@
+// @ts-ignore
+if (global.IMPORT_MSGS) console.log('<IMPORT: BeamServer.ts>');
+/* eslint-disable import/first */
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-dupe-class-members */
 /* eslint-disable no-redeclare */
@@ -21,11 +25,6 @@ interface BeamServerConfig {
 }
 
 export class BeamServer {
-  private config = {
-    port: 1010,
-    socketServerOptions: {},
-  };
-
   /** Socket Server instance */
   readonly SocketServer: WebSocketServer;
 
@@ -42,11 +41,11 @@ export class BeamServer {
   constructor(Schemes: DeepSchemes, Config: BeamServerConfig) {
     this.Engine = new Engine(Schemes, Config.engineOptions ?? {});
 
-    if (Config.port) this.config.port = Config.port;
-    if (Config.socketServerOptions) this.config.socketServerOptions = Config.socketServerOptions;
-    console.log('Creating server', Config);
+    const WSConfig = Config.socketServerOptions || {};
+    WSConfig.port = Config.port;
+    console.log('Creating server', WSConfig);
 
-    this.SocketServer = new WebSocketServer(this.config.socketServerOptions);
+    this.SocketServer = new WebSocketServer(WSConfig);
 
     this.SocketServer.on('connection', (socket, req) => {
       const endpoint = new BeamEndpoint(socket, this.Engine);

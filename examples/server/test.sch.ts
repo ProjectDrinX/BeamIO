@@ -8,3 +8,5 @@ export const testRequest = {
   /** This is a boolean */
   boo: Type.Boolean,
 };
+
+export default {};

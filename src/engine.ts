@@ -1,3 +1,7 @@
+// @ts-ignore
+if (global.IMPORT_MSGS) console.log('<IMPORT: engine.ts>');
+/* eslint-disable import/first */
+
 import Protocol from './protocol';
 import type { ProtocolConfig } from './protocol';
 import CompiledScheme from './CompiledScheme';
