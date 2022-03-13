@@ -7,6 +7,13 @@
     "build": "npm run test && echo Compiling... && tsc && echo Compilation done !",
     "test": "ts-node test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectDrinX/BeamIO.git"
+  },
+  "engines": {
+    "node": "14.* || >=16.*"
+  },
   "keywords": [
     "networking",
     "websocket"
