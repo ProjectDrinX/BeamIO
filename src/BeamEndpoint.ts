@@ -1,12 +1,8 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: BeamEndpoint.ts>');
-/* eslint-disable import/first */
-
 /* eslint-disable no-dupe-class-members */
 /* eslint-disable no-unused-vars */
 import type { WebSocket } from 'ws';
 import type Engine from './engine';
-import type { Packet, RequestID } from './engine';
+import type { Packet, SchemeID } from './engine';
 import { DeepObject } from './CompiledScheme';
 
 export default class BeamEndpoint {
@@ -14,17 +10,17 @@ export default class BeamEndpoint {
 
   private Engine: Engine;
 
-  protected callbacks: { [e: RequestID]: Function[] } = {
+  protected callbacks: { [e: SchemeID]: Function[] } = {
     disconnect: [],
   };
 
   constructor(engine: Engine, socket: WebSocket) {
     this.Engine = engine;
     this.socket = socket;
+  }
 
-    this.socket.onclose = (CloseEvent) => {
-      for (const f of this.callbacks.disconnect) f(CloseEvent);
-    };
+  handleEvent(event: string, ...args: any[]) {
+    for (const f of this.callbacks[event]) f(...args);
   }
 
   receivePacket(packet: Packet) {

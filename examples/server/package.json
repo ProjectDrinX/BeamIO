@@ -1,18 +1,19 @@
 {
   "name": "beamio-server-example",
   "version": "0.0.0",
-  "description": "",
+  "description": "Example of BeamIO server",
   "main": "main.js",
   "scripts": {
-    "test": "node main"
+    "test": "ts-node main"
   },
   "keywords": [
     "BeamIO",
     "network"
   ],
-  "author": "",
+  "author": "Mathieu Colmon",
   "license": "ISC",
   "dependencies": {
-    "beamio": "file:../../"
+    "beamio": "link:../../",
+    "beamio-example-schemes": "link:../BeamSchemes/"
   }
 }

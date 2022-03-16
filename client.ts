@@ -1,6 +1,7 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: client.ts>');
-// eslint-disable-next-line import/first
-import BeamServer from './src/BeamClient';
+import BeamClient from './src/BeamClient';
+import { WebSocket } from 'ws';
 
-export default BeamServer;
+// @ts-ignore
+global.WebSocket = WebSocket;
+
+export default BeamClient;

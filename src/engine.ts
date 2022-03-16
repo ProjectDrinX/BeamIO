@@ -1,7 +1,3 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: engine.ts>');
-/* eslint-disable import/first */
-
 import Protocol from './protocol';
 import type { ProtocolConfig } from './protocol';
 import CompiledScheme from './CompiledScheme';
@@ -9,20 +5,20 @@ import type { DeepScheme, DeepObject } from './CompiledScheme';
 
 export interface DeepSchemes { [k: string]: DeepScheme }
 
-type RequestHash = string;
-export type RequestID = string;
+type SchemeHash = string;
+export type SchemeID = string;
 
-interface RequestHashes { [id: RequestID]: RequestHash }
-interface Requests { [id: RequestHash]: CompiledScheme }
+interface SchemeHashes { [id: SchemeID]: SchemeHash }
+interface Schemes { [id: SchemeHash]: CompiledScheme }
 
 interface Response {
-  hash: RequestHash,
-  id: RequestID,
+  hash: SchemeHash,
+  id: SchemeID,
   data: DeepObject,
 }
 
 export interface Packet {
-  hash: RequestHash,
+  hash: SchemeHash,
   payload: string,
 }
 
@@ -31,44 +27,47 @@ export interface EngineConfig {
 }
 
 export default class {
-  private requestHashes: RequestHashes = {};
+  private schemeHashes: SchemeHashes = {};
 
-  private requests: Requests = {};
+  private schemes: Schemes = {};
 
   private protocol: Protocol;
 
   constructor(Schemes: DeepSchemes, Config: EngineConfig = {}) {
     this.protocol = new Protocol(Config.protocolConfig);
 
-    let i = 0;
-    for (const reqID in Schemes) {
-      if (!Object.prototype.hasOwnProperty.call(Schemes, reqID)) continue;
-      if (i >= 254) throw new Error('Reached request number limit');
-      const hash: RequestHash = String.fromCharCode(i);
-      const scheme = new CompiledScheme(reqID, Schemes[reqID]);
+    const SchemeIDs = Object.keys(Schemes).sort((a, b) => a.localeCompare(b));
 
-      this.requestHashes[reqID] = hash;
-      this.requests[hash] = scheme;
+    let i = 0;
+    for (const n in SchemeIDs) {
+      const schemeID = SchemeIDs[n];
+      if (!Object.prototype.hasOwnProperty.call(Schemes, schemeID)) continue;
+      if (i >= 254) throw new Error('Reached scheme number limit');
+      const hash: SchemeHash = String.fromCharCode(i);
+      const scheme = new CompiledScheme(schemeID, Schemes[schemeID]);
+
+      this.schemeHashes[schemeID] = hash;
+      this.schemes[hash] = scheme;
 
       i += 1;
     }
   }
 
-  isRegistered(reqID: RequestID): boolean {
-    return this.requestHashes[reqID] !== undefined;
+  isRegistered(schemeID: SchemeID): boolean {
+    return this.schemeHashes[schemeID] !== undefined;
   }
 
-  serialize(reqID: RequestID, data: DeepObject): string {
-    const hash = this.requestHashes[reqID];
-    if (!hash) throw new Error(`Undeclared request '${reqID}'`);
+  serialize(schemeID: SchemeID, data: DeepObject): string {
+    const hash = this.schemeHashes[schemeID];
+    if (!hash) throw new Error(`Undeclared scheme '${schemeID}'`);
 
-    const req = this.requests[hash];
+    const req = this.schemes[hash];
     return `${hash}${this.protocol.encode(req.genIterator(data))}`;
   }
 
   parse(packet: Packet): Response {
-    if (!this.requests[packet.hash]) throw new Error(`Undeclared request $Hash(${packet.hash.charCodeAt(0)})`);
-    const req = this.requests[packet.hash];
+    if (!this.schemes[packet.hash]) throw new Error(`Undeclared scheme $Hash(${packet.hash.charCodeAt(0)})`);
+    const req = this.schemes[packet.hash];
     const values = this.protocol.decode(packet);
 
     return {

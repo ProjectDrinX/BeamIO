@@ -2,7 +2,7 @@
 global.IMPORT_MSGS = true;
 /* eslint-disable import/first */
 import BeamClient from 'beamio/client';
-import * as Schemes from './main.sch';
+import * as Schemes from 'beamio-example-schemes';
 
 const Client = new BeamClient(Schemes, {
   host: 'localhost',
@@ -10,15 +10,63 @@ const Client = new BeamClient(Schemes, {
   ssl: false,
 });
 
-Client.on('connect', () => {
-  console.log('Client connected !');
+type UID = number;
+export interface User {
+  username: string,
+  color: {
+    r: number,
+    g: number,
+    b: number,
+  },
+};
 
-  Client.emit('loginRequest', {
-    password: 'PASS',
-    username: 'USER',
-    boo: false,
-    nbr: 10000,
-  } as typeof Schemes.loginRequest);
+const users: { [UID: UID]: User } = {};
+
+Client.on('connect', () => {
+  console.log('Client (re)connected !');
+
+  Client.emit('setUsername', {
+    username: `User${Math.round(Math.random() * 100).toString(36)}`,
+  } as typeof Schemes.setUsername);
+});
+
+setInterval(() => {
+  Client.emit('sendMessage', {
+    message: 'Hello, this is a message.',
+  } as typeof Schemes.sendMessage);
+}, 3000);
+
+setTimeout(() => {
+  console.log('Setting color'),
+  Client.emit('setUsernameColor', {
+    r: Math.floor(Math.random() * 256),
+    g: Math.floor(Math.random() * 256),
+    b: Math.floor(Math.random() * 256),
+  } as typeof Schemes.setUsernameColor)
+}, 2000);
+
+Client.on('messageEvent', (data: typeof Schemes.messageEvent) => {
+  console.log(`[${users[data.sender].username}]: ${data.message}`);
+});
+
+Client.on('userChangeColor', (data: typeof Schemes.userChangeColor) => {
+  console.log(`User '${users[data.UID].username}' set his color to`, data.color);
+  users[data.UID].color = data.color;
+});
+
+Client.on('userConnected', (data: typeof Schemes.userConnected) => {
+  console.log(`User connected: '${data.username}' (${data.UID}); Color:`, data.color);
+  users[data.UID] = data;
+});
+
+Client.on('userRenamed', (data: typeof Schemes.userRenamed) => {
+  console.log(`User renamed: '${users[data.UID].username}' (${data.UID}) => '${data.username}'`);
+  users[data.UID].username = data.username;
+});
+
+Client.on('userDisconnected', (data: typeof Schemes.userDisconnected) => {
+  console.log(`User disconnected: ${data.UID}`);
+  delete users[data.UID];
 });
 
 Client.on('disconnect', (e) => {

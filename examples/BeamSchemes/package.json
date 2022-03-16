@@ -1,0 +1,15 @@
+{
+  "name": "beamio-example-schemes",
+  "version": "0.0.0",
+  "description": "Schemes used by BeamIO examples",
+  "main": "main.sch.ts",
+  "keywords": [
+    "BeamIO",
+    "network"
+  ],
+  "author": "Mathieu Colmon",
+  "license": "ISC",
+  "dependencies": {
+    "beamio": "link:../../"
+  }
+}

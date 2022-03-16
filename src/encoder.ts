@@ -1,7 +1,3 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: encoder.ts>');
-/* eslint-disable import/first */
-
 function cToHex(c: string) {
   switch (c) {
     case '-': return 10;

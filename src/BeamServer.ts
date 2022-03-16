@@ -1,7 +1,3 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: BeamServer.ts>');
-/* eslint-disable import/first */
-
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-dupe-class-members */
 /* eslint-disable no-redeclare */
@@ -82,10 +78,11 @@ export default class {
         endpoint.socket.send(`\xFF${pingPayload}`);
       }, 5000);
 
-      endpoint.socket.on('close', () => {
+      endpoint.socket.onclose = (CloseEvent) => {
         clearInterval(pingInterval);
         delete this.endpoints[endpointID];
-      });
+        endpoint.handleEvent('disconnect', CloseEvent);
+      };
 
       this.lastEndpoint += 1;
     });

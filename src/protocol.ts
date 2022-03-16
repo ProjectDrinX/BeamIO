@@ -1,7 +1,3 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: protocol.ts>');
-/* eslint-disable import/first */
-
 import type { Packet } from './engine';
 
 function getFirstConsCharIndex(char = '', text = '', index = 0) {

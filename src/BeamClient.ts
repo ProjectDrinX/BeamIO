@@ -1,8 +1,4 @@
-// @ts-ignore
-if (global.IMPORT_MSGS) console.log('<IMPORT: BeamClient.ts>');
-/* eslint-disable import/first */
-
-import { WebSocket } from 'ws';
+import type { WebSocket as WSType } from 'ws';
 import type {
   ClientOptions as WSOptions,
   Event as WSEvent,
@@ -11,7 +7,7 @@ import Engine, {
   DeepSchemes,
   EngineConfig,
   Packet,
-  RequestID,
+  SchemeID,
 } from './engine';
 import BeamEndpoint from './BeamEndpoint';
 
@@ -40,6 +36,7 @@ interface BeamClientConfig {
   /** BeamEngine options */
   engineOptions?: EngineConfig,
 }
+
 export default class extends BeamEndpoint {
   /** Socket Client instance */
   // SocketClient: WebSocket;
@@ -47,12 +44,15 @@ export default class extends BeamEndpoint {
   // /** BeamEngine instance */
   // readonly Engine: Engine;
 
-  protected override callbacks: { [e: RequestID]: Function[] } = {
+  protected override callbacks: { [e: SchemeID]: Function[] } = {
     connect: [],
     disconnect: [],
   };
 
   constructor(Schemes: DeepSchemes, Config: BeamClientConfig) {
+    // @ts-ignore
+    const WS: typeof WSType = (typeof window !== 'undefined') ? WebSocket : global.WebSocket;
+
     const protocol = (Config.ssl === false) ? 'ws' : 'wss';
     const port = Config.port ?? (Config.ssl ? 443 : 80);
     const path = Config.path ?? '/';
@@ -64,13 +64,13 @@ export default class extends BeamEndpoint {
 
     super(
       new Engine(Schemes, Config.engineOptions ?? {}),
-      new WebSocket(hostname, Config.socketClientOptions),
+      new WS(hostname, Config.socketClientOptions),
     );
 
     const onConnect = (OpenEvent: WSEvent) => {
       this.socket = OpenEvent.target;
 
-      for (const f of this.callbacks.connect) f();
+      this.handleEvent('connect');
 
       this.socket.onmessage = (MessageEvent) => {
         const raw = MessageEvent.data.toString();
@@ -80,19 +80,18 @@ export default class extends BeamEndpoint {
           payload: raw.slice(1),
         };
 
-        console.log('Receive', packet);
         if (packet.hash === '\xFF') this.socket.send(raw);
         else this.receivePacket(packet);
       };
 
       this.socket.onclose = (CloseEvent) => {
-        for (const f of this.callbacks.disconnect) f(CloseEvent);
+        this.handleEvent('disconnect', CloseEvent);
 
         if (Config.autoReconnect === false) return;
 
         setTimeout(() => {
           console.log('Auto reconnect...');
-          this.socket = new WebSocket(hostname, Config.socketClientOptions);
+          this.socket = new WS(hostname, Config.socketClientOptions);
           this.socket.onopen = onConnect;
         }, Config.reconnectDelay ?? 5000);
       };
