@@ -10,4 +10,4 @@ export const messageEvent = {
   /** Sender UID */
   sender: Type.Number,
   message: Type.String,
-}
+};

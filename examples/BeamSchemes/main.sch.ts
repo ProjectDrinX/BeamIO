@@ -11,7 +11,7 @@ export const userConnected = {
     r: Type.Number,
     g: Type.Number,
     b: Type.Number,
-  }
+  },
 };
 
 /** By the server to notify that a user has renamed himself */
@@ -48,6 +48,6 @@ export const setUsernameColor = {
   r: Type.Number,
   g: Type.Number,
   b: Type.Number,
-}
+};
 
 export * from './chat.sch';

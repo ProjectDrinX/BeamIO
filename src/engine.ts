@@ -9,7 +9,7 @@ type SchemeHash = string;
 export type SchemeID = string;
 
 interface SchemeHashes { [id: SchemeID]: SchemeHash }
-interface Schemes { [id: SchemeHash]: CompiledScheme }
+interface DeclaredSchemes { [id: SchemeHash]: CompiledScheme }
 
 interface Response {
   hash: SchemeHash,
@@ -29,7 +29,7 @@ export interface EngineConfig {
 export default class {
   private schemeHashes: SchemeHashes = {};
 
-  private schemes: Schemes = {};
+  private schemes: DeclaredSchemes = {};
 
   private protocol: Protocol;
 
