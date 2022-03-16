@@ -18,7 +18,7 @@ export interface User {
     g: number,
     b: number,
   },
-};
+}
 
 const users: { [UID: UID]: User } = {};
 
@@ -37,12 +37,12 @@ setInterval(() => {
 }, 3000);
 
 setTimeout(() => {
-  console.log('Setting color'),
+  console.log('Setting color');
   Client.emit('setUsernameColor', {
     r: Math.floor(Math.random() * 256),
     g: Math.floor(Math.random() * 256),
     b: Math.floor(Math.random() * 256),
-  } as typeof Schemes.setUsernameColor)
+  } as typeof Schemes.setUsernameColor);
 }, 2000);
 
 Client.on('messageEvent', (data: typeof Schemes.messageEvent) => {
