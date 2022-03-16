@@ -3,7 +3,7 @@ import { Type } from 'beamio';
 /** By the server to notify that a user has logged in */
 export const userConnected = {
   /** The user UID */
-  UID: Type.Number,
+  uUID: Type.Number,
   /** The user username */
   username: Type.String,
   /** The user username color */
@@ -17,14 +17,14 @@ export const userConnected = {
 /** By the server to notify that a user has renamed himself */
 export const userRenamed = {
   /** The user UID */
-  UID: Type.Number,
+  uUID: Type.Number,
   /** The user new username */
   username: Type.String,
 };
 
 /** By the server to notify that a user has changed his color */
 export const userChangeColor = {
-  UID: Type.Number,
+  uUID: Type.Number,
   color: {
     r: Type.Number,
     g: Type.Number,
@@ -35,7 +35,7 @@ export const userChangeColor = {
 /** By the server to notify that a user has logged in */
 export const userDisconnected = {
   /** The user UID */
-  UID: Type.Number,
+  uUID: Type.Number,
 };
 
 /** Required by the client to set its usename */

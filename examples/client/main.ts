@@ -50,23 +50,23 @@ Client.on('messageEvent', (data: typeof Schemes.messageEvent) => {
 });
 
 Client.on('userChangeColor', (data: typeof Schemes.userChangeColor) => {
-  console.log(`User '${users[data.UID].username}' set his color to`, data.color);
-  users[data.UID].color = data.color;
+  console.log(`User '${users[data.uUID].username}' set his color to`, data.color);
+  users[data.uUID].color = data.color;
 });
 
 Client.on('userConnected', (data: typeof Schemes.userConnected) => {
-  console.log(`User connected: '${data.username}' (${data.UID}); Color:`, data.color);
-  users[data.UID] = data;
+  console.log(`User connected: '${data.username}' (${data.uUID}); Color:`, data.color);
+  users[data.uUID] = data;
 });
 
 Client.on('userRenamed', (data: typeof Schemes.userRenamed) => {
-  console.log(`User renamed: '${users[data.UID].username}' (${data.UID}) => '${data.username}'`);
-  users[data.UID].username = data.username;
+  console.log(`User renamed: '${users[data.uUID].username}' (${data.uUID}) => '${data.username}'`);
+  users[data.uUID].username = data.username;
 });
 
 Client.on('userDisconnected', (data: typeof Schemes.userDisconnected) => {
-  console.log(`User disconnected: ${data.UID}`);
-  delete users[data.UID];
+  console.log(`User disconnected: ${data.uUID}`);
+  delete users[data.uUID];
 });
 
 Client.on('disconnect', (e) => {

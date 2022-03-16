@@ -19,7 +19,7 @@ export interface User {
   },
 };
 
-export interface Users { [UID: UID]: User };
+export interface Users { [uUID: UID]: User };
 
 export interface Message {
   sender: UID,
@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
     socket.on('userConnected', (data: typeof Schemes.userConnected) => {
-      this.users[data.UID] = {
+      this.users[data.uUID] = {
         username: data.username,
         color: data.color,
       };
@@ -56,15 +56,15 @@ export default {
     });
 
     socket.on('userRenamed', (data: typeof Schemes.userRenamed) => {
-      this.users[data.UID].username = data.username;
+      this.users[data.uUID].username = data.username;
     });
 
     socket.on('userChangeColor', (data: typeof Schemes.userChangeColor) => {
-      this.users[data.UID].color = data.color;
+      this.users[data.uUID].color = data.color;
     });
 
     socket.on('userDisconnected', (data: typeof Schemes.userDisconnected) => {
-      delete this.users[data.UID];
+      delete this.users[data.uUID];
     });
   },
 }

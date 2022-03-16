@@ -16,15 +16,15 @@ interface User {
   },
 }
 
-const users: { [e: UID]: User } = {}
+const users: { [e: UID]: User } = {};
 
 let i = 0;
 BS.on('connect', (client) => {
-  const UID = i;
-  i++;
+  const uUID = i;
+  i += 1;
 
   const user = {
-    username: `User_${UID}`,
+    username: `User_${uUID}`,
     color: {
       r: Math.floor(Math.random() * 256),
       g: Math.floor(Math.random() * 256),
@@ -32,20 +32,21 @@ BS.on('connect', (client) => {
     },
   };
 
-  users[UID] = user;
+  users[uUID] = user;
   console.log(`User '${user.username}' connected !`);
 
-  for (const uUID in users) {
-    const usr = users[uUID];
+  for (const usrUID in users) {
+    const usr = users[usrUID];
     client.emit('userConnected', {
-      UID: ~~uUID,
+      // @ts-ignore
+      uUID: usrUID as number,
       username: usr.username,
       color: usr.color,
     } as typeof Schemes.userConnected);
   }
 
   BS.broadcast('userConnected', {
-    UID,
+    uUID,
     username: user.username,
     color: user.color,
   } as typeof Schemes.userConnected);
@@ -62,7 +63,7 @@ BS.on('connect', (client) => {
     user.username = data.username;
 
     BS.broadcast('userRenamed', {
-      UID,
+      uUID,
       username: user.username,
     } as typeof Schemes.userRenamed);
   });
@@ -80,7 +81,7 @@ BS.on('connect', (client) => {
     console.log(`User '${user.username}' set his color to:`, data);
 
     BS.broadcast('userChangeColor', {
-      UID,
+      uUID,
       color: user.color,
     } as typeof Schemes.userChangeColor);
   });
@@ -96,7 +97,7 @@ BS.on('connect', (client) => {
     console.log(`[${user.username}]: ${data.message}`);
 
     BS.broadcast('messageEvent', {
-      sender: UID,
+      sender: uUID,
       message: data.message,
     } as typeof Schemes.messageEvent);
   });
@@ -105,9 +106,9 @@ BS.on('connect', (client) => {
     console.log(`User '${user.username}' disconnected: '${e.reason}' (${e.code})`);
 
     BS.broadcast('userDisconnected', {
-      UID,
+      uUID,
     } as typeof Schemes.userDisconnected);
 
-    delete users[UID];
+    delete users[uUID];
   });
 });

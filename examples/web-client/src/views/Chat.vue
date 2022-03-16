@@ -22,9 +22,12 @@ defineProps<{
     <div class="messages">
       <div v-for="(msg, i) in messages">
         <div v-if="!messages[i - 1] || messages[i - 1].sender !== msg.sender" v-bind:style="{
-          color: `rgb(${users[msg.sender].color.r}, ${users[msg.sender].color.g}, ${users[msg.sender].color.b})`
+          color: users[msg.sender]
+            ? `rgb(${users[msg.sender].color.r}, ${users[msg.sender].color.g}, ${users[msg.sender].color.b})`
+            : '#888',
+          'font-style': users[msg.sender] ? 'normal' : 'italic',
         }">
-          {{ users[msg.sender].username }}
+          {{ users[msg.sender] ? users[msg.sender].username : `Disconnected (${msg.sender})` }}
         </div>
         <div class="message">{{ msg.message }}</div>
       </div>
