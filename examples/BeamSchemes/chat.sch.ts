@@ -11,3 +11,12 @@ export const messageEvent = {
   sender: Type.Number,
   message: Type.String,
 };
+
+/** By the client to notify that he is writing */
+export const chatWrite = {};
+
+/** By the server to notify a client writing status */
+export const userWritingStatus = {
+  uUID: Type.Number,
+  status: Type.Boolean,
+};

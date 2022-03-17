@@ -105,6 +105,7 @@ export default class {
     return new Promise((cb, er) => {
       const serialized = this.Engine.serialize(event, data);
       for (const endpoint in this.endpoints) {
+        if (this.endpoints[endpoint].socket.readyState !== 1) continue;
         this.endpoints[endpoint].socket.send(serialized, (err) => {
           if (!err) cb(); else er(err);
         });

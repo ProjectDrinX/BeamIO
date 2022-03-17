@@ -19,6 +19,10 @@ export default class BeamEndpoint {
     this.socket = socket;
   }
 
+  get isReady() {
+    return this.socket.readyState === 1;
+  }
+
   handleEvent(event: string, ...args: any[]) {
     for (const f of this.callbacks[event]) f(...args);
   }

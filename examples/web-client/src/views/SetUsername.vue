@@ -11,8 +11,14 @@ import socket, { Schemes } from '../net';
 <script lang="ts">
 export default {
   data: () => ({
-    username: localStorage.getItem('username'),
-  }),
+    username: '',
+  }) as {
+    username: string,
+  },
+
+  mounted() {
+    this.username = localStorage.getItem('username') ?? '';
+  },
 
   methods: {
     setUsername(e: Event) {
@@ -23,7 +29,7 @@ export default {
         return;
       }
 
-      if (this.username.length > 25) {
+      if (this.username.length > 15) {
         alert('This username is too long');
         return;
       }

@@ -1,23 +1,32 @@
 <script setup lang="ts">
 import UserList from '../components/UserList.vue';
-import type { User, Users, Message } from '../App.vue';
+import SettingsModal from '../components/SettingsModal.vue';
+import SendButton from '../components/icons/send.vue';
+import SettingsButton from '../components/icons/settings.vue';
+import type { Settings, User, Users, Message } from '../App.vue';
 import socket, { Schemes } from '../net';
 
 defineProps<{
   messages: Message[],
-  user: User,
   users: Users,
+  user: User,
+  settings: Settings,
 }>()
 </script>
 
 <template>
   <div class="topbar">
-    <div>Connected as</div>
-    <div v-bind:style="{
-      color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})`
-    }">{{ user.username }}</div>
+    <div class="title">
+      <div>Connected as</div>
+      <div v-bind:style="{
+        color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})`
+      }">{{ user.username }}</div>
+    </div>
+    <SettingsButton @click="settingsOpen = !settingsOpen"/>
   </div>
+
   <UserList class="sidebar" :users="users"/>
+
   <div class="container">
     <div class="messages" ref="messages">
       <div v-for="(msg, i) in messages">
@@ -34,21 +43,32 @@ defineProps<{
     </div>
 
     <form class="textbox" @submit="sendMessage">
-      <input type="text" v-model="message" placeholder="Message">
+      <input type="text"
+        v-model="message"
+        placeholder="Message"
+        @beforeinput="setWritingStatus"
+        autofocus
+      >
+      <SendButton class="sendButton" @click="sendMessage"/>
     </form>
   </div>
+
+  <SettingsModal :user="user" :settings="settings" :open="settingsOpen"/>
 </template>
 
 <script lang="ts">
 export default {
   data: () => ({
     message: '',
+    settingsOpen: false,
   }) as {
     message: string,
+    settingsOpen: boolean,
   },
 
   mounted() {
     this.scrollDown(true);
+    this.user.username = localStorage.getItem('username') ?? '';
   },
 
   methods: {
@@ -77,6 +97,10 @@ export default {
       this.message = '';
       this.scrollDown(true);
     },
+
+    setWritingStatus() {
+      socket.emit('chatWrite', {});
+    },
   },
 
   watch: {
@@ -98,10 +122,15 @@ export default {
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 20px;
-  column-gap: 6px;
 
   z-index: 10;
+}
+
+.topbar > .title {
+  display: flex;
+  column-gap: 6px;
 }
 
 .sidebar {
@@ -110,6 +139,8 @@ export default {
   bottom: 0;
   left: 0;
   width: 400px;
+  overflow: hidden;
+  overflow-y: scroll;
   background-color: #ffffff08;
 }
 
@@ -130,7 +161,9 @@ export default {
 
 .message {
   margin-left: 15px;
+  margin-top: 5px;
   font-size: 23px;
+  max-width: 600px;
 }
 
 .username {
@@ -150,5 +183,11 @@ export default {
   width: 100%;
   padding: 10px 20px;
   background-color: #ffffff1c;
+}
+
+.sendButton {
+  position: fixed;
+  right: 0;
+  bottom: 0;
 }
 </style>

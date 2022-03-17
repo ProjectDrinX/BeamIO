@@ -26,31 +26,44 @@ Client.on('connect', () => {
   console.log('Client (re)connected !');
 
   Client.emit('setUsername', {
-    username: `User${Math.round(Math.random() * 100).toString(36)}`,
+    username: 'BeamBot',
   } as typeof Schemes.setUsername);
 });
 
-setInterval(() => {
-  Client.emit('sendMessage', {
-    message: 'Hello, this is a message.',
-  } as typeof Schemes.sendMessage);
-}, 3000);
+const messages = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+];
 
-setTimeout(() => {
-  console.log('Setting color');
+let i = 0;
+
+setInterval(() => {
+  Client.emit('chatWrite', {});
+  setTimeout(() => {
+    Client.emit('sendMessage', {
+      message: messages[i],
+    } as typeof Schemes.sendMessage);
+
+    if (messages[i + 1]) i += 1; else i = 0; 
+  }, 2000);
+}, 5000);
+
+setInterval(() => {
+  // console.log('Setting color');
   Client.emit('setUsernameColor', {
     r: Math.floor(Math.random() * 256),
     g: Math.floor(Math.random() * 256),
     b: Math.floor(Math.random() * 256),
   } as typeof Schemes.setUsernameColor);
-}, 2000);
+}, 100);
 
 Client.on('messageEvent', (data: typeof Schemes.messageEvent) => {
   console.log(`[${users[data.sender].username}]: ${data.message}`);
 });
 
 Client.on('userChangeColor', (data: typeof Schemes.userChangeColor) => {
-  console.log(`User '${users[data.uUID].username}' set his color to`, data.color);
   users[data.uUID].color = data.color;
 });
 
@@ -67,6 +80,10 @@ Client.on('userRenamed', (data: typeof Schemes.userRenamed) => {
 Client.on('userDisconnected', (data: typeof Schemes.userDisconnected) => {
   console.log(`User disconnected: ${data.uUID}`);
   delete users[data.uUID];
+});
+
+Client.on('ping', () => {
+  Client.emit('ping', {});
 });
 
 Client.on('disconnect', (e) => {

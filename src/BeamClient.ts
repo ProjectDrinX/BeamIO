@@ -38,12 +38,6 @@ interface BeamClientConfig {
 }
 
 export default class extends BeamEndpoint {
-  /** Socket Client instance */
-  // SocketClient: WebSocket;
-
-  // /** BeamEngine instance */
-  // readonly Engine: Engine;
-
   protected override callbacks: { [e: SchemeID]: Function[] } = {
     connect: [],
     disconnect: [],
