@@ -1,6 +1,3 @@
-// @ts-ignore
-global.IMPORT_MSGS = true;
-/* eslint-disable import/first */
 import BeamClient from 'beamio/client';
 import * as Schemes from 'beamio-example-schemes';
 

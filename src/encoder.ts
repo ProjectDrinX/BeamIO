@@ -74,33 +74,41 @@ const unsignedInt = {
 const boolList = {
   encode(bools: boolean[]): string {
     let hex = '';
-    let i = 7;
-    let n = 0;
-
+    let temp = '0b';
+    let i = 0;
+  
     for (const b of bools) {
-      if (b) n += 2 ** i;
-
-      if (i === 0) {
-        hex += String.fromCharCode(n);
-        i = 7;
-        n = 0;
-      } else i -= 1;
+      if (i % 8 === 0 && i) {
+        hex += String.fromCharCode(~~temp);
+        temp = '0b';
+      }
+      temp += ~~b;
+      i += 1;
     }
-
-    if (n > 0) hex += String.fromCharCode(n);
-
-    return hex || '\0';
+  
+    while (i % 8 !== 0) {
+      temp += '0';
+      i += 1;
+    }
+  
+    hex += String.fromCharCode(~~temp);
+    return hex;
   },
 
   decode(hex: string): boolean[] {
     const bools = [];
     for (let i = 0; i < hex.length; i += 1) {
-      let n = hex.charCodeAt(i);
-      for (let t = 7; t >= 0; t -= 1) {
-        const b = n >= 2 ** t;
-        bools.push(b);
-        if (b) n -= 2 ** t;
-      }
+      const n = hex.charCodeAt(i);
+      bools.push(
+        !!(n & 0b10000000),
+        !!(n & 0b1000000),
+        !!(n & 0b100000),
+        !!(n & 0b10000),
+        !!(n & 0b1000),
+        !!(n & 0b100),
+        !!(n & 0b10),
+        !!(n & 0b1),
+      );
     }
 
     return bools;
