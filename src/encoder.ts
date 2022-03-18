@@ -55,7 +55,7 @@ const unsignedInt = {
 
     let rs = '';
     for (let i = 0; i < hex.length; i += 2) {
-      rs += String.fromCharCode(parseInt(hex[i], 16) * 16 + parseInt(hex[i + 1], 16));
+      rs += String.fromCharCode(~~`0x${hex[i]}${hex[i + 1]}`);
     }
 
     return rs;
