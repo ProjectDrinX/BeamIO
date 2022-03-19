@@ -22,7 +22,7 @@ module.exports = {
       repo: 'git@github.com:ProjectDrinX/BeamIO.git',
       path: `${process.env.DEPLOY_SERVER_PATH}/BeamIO-example`,
       'post-deploy':
-        'cd examples/server && yarn && pm2 reload ecosystem.config.js --env production && pm2 save && git checkout yarn.lock',
+        'pwd && cd examples/server && yarn && pm2 reload ecosystem.config.js --env production && pm2 save && git checkout yarn.lock',
       env: {
         PORT: process.env.SERVER_EXAMPLE_PORT
       },
