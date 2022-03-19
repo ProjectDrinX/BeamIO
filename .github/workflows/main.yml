@@ -36,4 +36,4 @@ jobs:
 
       - name: Deploy
         working-directory: ./examples/server
-        run: env $(cat .env | grep -v \"#\" | xargs) pm2 deploy ecosystem.config.js staging
+        run: env $(cat .env | grep -v \"#\" | xargs) pm2 deploy ecosystem.config.js production
