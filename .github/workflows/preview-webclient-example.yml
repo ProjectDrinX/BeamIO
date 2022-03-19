@@ -2,7 +2,6 @@ name: Preview 'web-client' example to Firebase Hosting on PR
 
 'on':
   pull_request:
-  workflow_dispatch:
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
