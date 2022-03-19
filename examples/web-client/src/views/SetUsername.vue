@@ -30,6 +30,12 @@ export default {
         return;
       }
 
+      const rlLen = this.username.replace(/[^0-z]/gi, '').length;
+      if (rlLen === 0) {
+        alert('Username must contain at least 1 alphanumeric character');
+        return;
+      }
+
       if (this.username.length > 15) {
         alert('This username is too long');
         return;

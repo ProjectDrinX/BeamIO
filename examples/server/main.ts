@@ -74,7 +74,7 @@ BS.on('connect', (client) => {
   } as typeof Schemes.userConnected);
 
   client.on('setUsername', (data: typeof Schemes.setUsername) => {
-    const rlLen = data.username.replace(/[^a-z]/gi, '').length;
+    const rlLen = data.username.replace(/[^0-z]/gi, '').length;
     if (rlLen === 0) {
       console.error(`User '${user.username}' set a too short username: ${rlLen} byte(s)`);
       return;
