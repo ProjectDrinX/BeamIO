@@ -1,4 +1,4 @@
-name: Server Example - Deploy
+name: Deploy 'server' example to Iridium cloud
 
 on:
   push:
@@ -29,7 +29,6 @@ jobs:
           echo DEPLOY_SERVER_PORT=${{ secrets.DEPLOY_SERVER_PORT }} >> .env
           echo DEPLOY_SERVER_USER=${{ secrets.DEPLOY_SERVER_USER }} >> .env
           echo DEPLOY_SERVER_PATH=${{ secrets.DEPLOY_SERVER_PATH }} >> .env
-          echo SERVER_EXAMPLE_PORT=${{ secrets.SERVER_EXAMPLE_PORT }} >> .env
 
       - name: Install PM2
         working-directory: ./examples/server
