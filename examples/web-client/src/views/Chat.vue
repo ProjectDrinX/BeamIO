@@ -32,7 +32,7 @@ defineProps<{
   <UserList class="sidebar" :users="users"/>
 
   <div class="container">
-    <div class="messages" ref="messages">
+    <div class="messages" ref="msgsContainer">
       <div v-for="(msg, i) in messages">
         <div
           class="username"
@@ -90,7 +90,7 @@ export default {
   methods: {
     scrollDown(force = false) {
       // @ts-ignore
-      const container: HTMLElement = this.$refs.messages;
+      const container: HTMLElement = this.$refs.msgsContainer;
 
       if (
         !force &&

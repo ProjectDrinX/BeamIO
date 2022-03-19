@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <div class="users">
-    <div class="item" v-for="(user, k) in users" v-key="k">
+    <div class="item" v-for="(user, k) in users" :key="k">
       <div>
         <UserIcon v-if="!user.isWriting"/>
         <Writing v-else/>
