@@ -4,8 +4,6 @@ name: Deploy 'web-client' example to Firebase Hosting on push
   push:
     branches:
       - main
-    paths:
-      - examples/web-client/**
   workflow_dispatch:
 jobs:
   build_and_deploy:
