@@ -3,7 +3,7 @@ import * as Schemes from 'beamio-example-schemes';
 
 const Client = new BeamClient(Schemes, {
   host: 'localhost',
-  port: 1010,
+  port: 8310,
   ssl: false,
 });
 

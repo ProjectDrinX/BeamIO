@@ -2,7 +2,7 @@ import BeamServer from 'beamio/Server';
 import * as Schemes from 'beamio-example-schemes';
 
 const BS = new BeamServer(Schemes, {
-  port: 1010,
+  port: 8310,
 });
 
 type UID = number;
