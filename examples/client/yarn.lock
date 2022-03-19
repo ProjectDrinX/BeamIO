@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"beamio-example-schemes@link:../BeamSchemes":
+  version "0.0.0"
+  uid ""
+
 "beamio@link:../..":
   version "0.0.0"
   uid ""
