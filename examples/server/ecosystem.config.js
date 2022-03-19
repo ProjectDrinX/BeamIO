@@ -2,14 +2,11 @@ module.exports = {
   apps: [
     {
       name: 'beamio-server-example',
-      script: 'yarn test',
+      script: 'node main',
       instances: 1,
       autorestart: true,
       watch: '.',
       max_memory_restart: '1G',
-      env: {
-        PORT: process.env.PORT,
-      },
     },
   ],
   deploy: {
@@ -22,10 +19,7 @@ module.exports = {
       repo: 'git@github.com:ProjectDrinX/BeamIO.git',
       path: `${process.env.DEPLOY_SERVER_PATH}/BeamIO-example`,
       'post-deploy':
-        'pwd && cd examples/server && yarn && pm2 reload ecosystem.config.js --env production && pm2 save && git checkout yarn.lock',
-      env: {
-        PORT: process.env.SERVER_EXAMPLE_PORT
-      },
+        'cd examples/server && yarn && yarn build && pm2 reload ecosystem.config.js --env production && pm2 save && git checkout yarn.lock',
     },
   },
 }
