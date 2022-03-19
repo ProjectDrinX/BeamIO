@@ -1,15 +1,18 @@
-import type { WebSocket as WSType } from 'ws';
+import Engine from './engine';
+import BeamEndpoint from './BeamEndpoint';
+
 import type {
+  WebSocket as WSType,
   ClientOptions as WSOptions,
   Event as WSEvent,
 } from 'ws';
-import Engine, {
+
+import type {
   DeepSchemes,
   EngineConfig,
   Packet,
   SchemeID,
 } from './engine';
-import BeamEndpoint from './BeamEndpoint';
 
 interface BeamClientConfig {
   /** Server hostname */

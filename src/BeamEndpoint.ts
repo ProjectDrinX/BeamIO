@@ -3,7 +3,7 @@
 import type { WebSocket } from 'ws';
 import type Engine from './engine';
 import type { Packet, SchemeID } from './engine';
-import { DeepObject } from './CompiledScheme';
+import type { DeepObject } from './CompiledScheme';
 
 export default class BeamEndpoint {
   socket: WebSocket;
