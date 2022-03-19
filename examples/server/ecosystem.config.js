@@ -22,4 +22,4 @@ module.exports = {
         'yarn && cd examples/BeamSchemes && yarn && cd ../server && yarn && pm2 reload ecosystem.config.js --env production && pm2 save && git checkout yarn.lock',
     },
   },
-}
+};

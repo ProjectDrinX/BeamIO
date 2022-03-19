@@ -76,7 +76,7 @@ const boolList = {
     let hex = '';
     let temp = '0b';
     let i = 0;
-  
+
     for (const b of bools) {
       if (i % 8 === 0 && i) {
         hex += String.fromCharCode(~~temp);
@@ -85,12 +85,12 @@ const boolList = {
       temp += ~~b;
       i += 1;
     }
-  
+
     while (i % 8 !== 0) {
       temp += '0';
       i += 1;
     }
-  
+
     hex += String.fromCharCode(~~temp);
     return hex;
   },

@@ -43,7 +43,7 @@ setInterval(() => {
       message: messages[i],
     } as typeof Schemes.sendMessage);
 
-    if (messages[i + 1]) i += 1; else i = 0; 
+    if (messages[i + 1]) i += 1; else i = 0;
   }, 2000);
 }, 5000);
 
