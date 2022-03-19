@@ -15,6 +15,7 @@ module.exports = {
   deploy: {
     production: {
       host: process.env.DEPLOY_SERVER_HOST,
+      port: process.env.DEPLOY_SERVER_PORT,
       user: process.env.DEPLOY_SERVER_USER,
       key: 'deploy.key',
       ref: 'origin/main',

@@ -1,4 +1,5 @@
 *.log
+*.key
 # *.ts
 node_modules/
 examples/
