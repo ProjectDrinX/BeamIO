@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'beamio-server-example',
-      script: 'node main',
+      script: 'ts-node main.ts',
       instances: 1,
       autorestart: true,
       watch: '.',
