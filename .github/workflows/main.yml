@@ -26,6 +26,7 @@ jobs:
         run: |
           touch .env
           echo DEPLOY_SERVER_HOST=${{ secrets.DEPLOY_SERVER_HOST }} >> .env
+          echo DEPLOY_SERVER_PORT=${{ secrets.DEPLOY_SERVER_PORT }} >> .env
           echo DEPLOY_SERVER_USER=${{ secrets.DEPLOY_SERVER_USER }} >> .env
           echo DEPLOY_SERVER_PATH=${{ secrets.DEPLOY_SERVER_PATH }} >> .env
           echo SERVER_EXAMPLE_PORT=${{ secrets.SERVER_EXAMPLE_PORT }} >> .env
