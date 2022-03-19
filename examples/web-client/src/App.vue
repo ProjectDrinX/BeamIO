@@ -43,30 +43,29 @@ export interface Message {
 }
 
 export default {
-  data: () =>
-    ({
-      loading: 'Creating BeamIO endpont...',
+  data: () => ({
+    loading: 'Creating BeamIO endpont...',
 
-      user: {
-        username: localStorage.getItem('username') ?? '',
-        color: JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
-          r: Math.floor(Math.random() * 256),
-          g: Math.floor(Math.random() * 256),
-          b: Math.floor(Math.random() * 256),
-        },
+    user: {
+      username: localStorage.getItem('username') ?? '',
+      color: JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
+        r: Math.floor(Math.random() * 256),
+        g: Math.floor(Math.random() * 256),
+        b: Math.floor(Math.random() * 256),
       },
-      settings: {
-        bgColor: { r: 24, g: 24, b: 24 },
-      },
-      users: {},
-      messages: [],
-    } as {
-      loading: string;
-      user: User;
-      settings: Settings;
-      users: Users;
-      messages: Message[];
-    }),
+    },
+    settings: {
+      bgColor: { r: 24, g: 24, b: 24 },
+    },
+    users: {},
+    messages: [],
+  } as {
+    loading: string;
+    user: User;
+    settings: Settings;
+    users: Users;
+    messages: Message[];
+  }),
 
   beforeCreate() {
     socket.on('connect', () => {
