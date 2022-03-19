@@ -1,0 +1,39 @@
+name: Server Example - Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up SSH
+        working-directory: ./examples/server
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$DEPLOY_PRIVATE_KEY" > ./deploy.key
+          sudo chmod 600 ./deploy.key
+          echo "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        shell: bash
+        env:
+          DEPLOY_PRIVATE_KEY: ${{secrets.DEPLOY_PRIVATE_KEY}}
+          DEPLOY_KNOWN_HOSTS: ${{secrets.DEPLOY_KNOWN_HOSTS}}
+
+      - name: Create env file
+        working-directory: ./examples/server
+        run: |
+          touch .env
+          echo DEPLOY_SERVER_HOST=${{ secrets.DEPLOY_SERVER_HOST }} >> .env
+          echo DEPLOY_SERVER_USER=${{ secrets.DEPLOY_SERVER_USER }} >> .env
+          echo DEPLOY_SERVER_PATH=${{ secrets.DEPLOY_SERVER_PATH }} >> .env
+          echo SERVER_EXAMPLE_PORT=${{ secrets.SERVER_EXAMPLE_PORT }} >> .env
+
+      - name: Install PM2
+        working-directory: ./examples/server
+        run: npm i pm2
+
+      - name: Deploy
+        working-directory: ./examples/server
+        run: env $(cat .env | grep -v \"#\" | xargs) pm2 deploy ecosystem.config.js staging
