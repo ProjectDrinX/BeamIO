@@ -4,17 +4,21 @@ import UserIcon from './icons/user.vue';
 import Writing from './icons/writing.vue';
 
 defineProps<{
-  users: Users,
+  users: Users;
 }>();
 </script>
 
 <template>
   <div class="users">
-    <div class="item" v-for="user in users">
+    <div class="item" v-for="(user, k) in users" v-key="k">
       <div>
         <UserIcon v-if="!user.isWriting"/>
         <Writing v-else/>
-        <div v-bind:style="{ color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})` }">
+        <div
+          :style="{
+            color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})`,
+          }"
+        >
           {{ user.username }}
         </div>
       </div>

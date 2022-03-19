@@ -48,7 +48,7 @@ export default class extends BeamEndpoint {
     const WS: typeof WSType = (typeof window !== 'undefined') ? WebSocket : global.WebSocket;
 
     const protocol = (Config.ssl === false) ? 'ws' : 'wss';
-    const port = Config.port ?? (Config.ssl ? 443 : 80);
+    const port = Config.port ?? (Config.ssl === false ? 80 : 443);
     const path = Config.path ?? '/';
 
     if (path[0] !== '/') throw new Error('Path must start with \'/\'');

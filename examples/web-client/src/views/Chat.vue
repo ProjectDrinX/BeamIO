@@ -7,20 +7,24 @@ import type { Settings, User, Users, Message } from '../App.vue';
 import socket, { Schemes } from '../net';
 
 defineProps<{
-  messages: Message[],
-  users: Users,
-  user: User,
-  settings: Settings,
-}>()
+  messages: Message[];
+  users: Users;
+  user: User;
+  settings: Settings;
+}>();
 </script>
 
 <template>
   <div class="topbar">
     <div class="title">
       <div>Connected as</div>
-      <div v-bind:style="{
-        color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})`
-      }">{{ user.username }}</div>
+      <div
+        v-bind:style="{
+          color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})`,
+        }"
+      >
+        {{ user.username }}
+      </div>
     </div>
     <SettingsButton @click="settingsOpen = !settingsOpen"/>
   </div>
@@ -30,25 +34,36 @@ defineProps<{
   <div class="container">
     <div class="messages" ref="messages">
       <div v-for="(msg, i) in messages">
-        <div class="username" v-if="!messages[i - 1] || messages[i - 1].sender !== msg.sender" v-bind:style="{
-          color: users[msg.sender]
-            ? `rgb(${users[msg.sender].color.r}, ${users[msg.sender].color.g}, ${users[msg.sender].color.b})`
-            : '#888',
-          'font-style': users[msg.sender] ? 'normal' : 'italic',
-        }">
-          {{ users[msg.sender] ? users[msg.sender].username : `Disconnected (${msg.sender})` }}
+        <div
+          class="username"
+          v-if="!messages[i - 1] || messages[i - 1].sender !== msg.sender"
+          v-bind:style="{
+            color: users[msg.sender]
+              ? `rgb(${users[msg.sender].color.r}, ${
+                  users[msg.sender].color.g
+                }, ${users[msg.sender].color.b})`
+              : '#888',
+            'font-style': users[msg.sender] ? 'normal' : 'italic',
+          }"
+        >
+          {{
+            users[msg.sender]
+              ? users[msg.sender].username
+              : `Disconnected (${msg.sender})`
+          }}
         </div>
         <div class="message">{{ msg.message }}</div>
       </div>
     </div>
 
     <form class="textbox" @submit="sendMessage">
-      <input type="text"
+      <input
+        type="text"
         v-model="message"
         placeholder="Message"
         @beforeinput="setWritingStatus"
         autofocus
-      >
+      />
       <SendButton class="sendButton" @click="sendMessage"/>
     </form>
   </div>
@@ -58,13 +73,14 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  data: () => ({
-    message: '',
-    settingsOpen: false,
-  }) as {
-    message: string,
-    settingsOpen: boolean,
-  },
+  data: () =>
+    ({
+      message: '',
+      settingsOpen: false,
+    } as {
+      message: string;
+      settingsOpen: boolean;
+    }),
 
   mounted() {
     this.scrollDown(true);
@@ -77,9 +93,11 @@ export default {
       const container: HTMLElement = this.$refs.messages;
 
       if (
-        !force
-        && (container.scrollHeight - container.scrollTop - container.clientHeight) > 10
-      ) return;
+        !force &&
+        container.scrollHeight - container.scrollTop - container.clientHeight >
+          10
+      )
+        return;
 
       setTimeout(() => {
         container.scrollTo(0, 10 ** 10);
@@ -108,7 +126,7 @@ export default {
       this.scrollDown();
     },
   },
-}
+};
 </script>
 
 <style scoped>

@@ -12,11 +12,19 @@ svg {
   fill: #e2e2e2;
 }
 
-@keyframes blink { 50% { fill: transparent }}
-.dot { 
+@keyframes blink {
+  50% {
+    fill: transparent;
+  }
+}
+.dot {
   animation: 1s blink infinite;
   fill: #ffffff52;
 }
-.dot:nth-child(2) { animation-delay: 250ms }
-.dot:nth-child(3) { animation-delay: 500ms }
+.dot:nth-child(2) {
+  animation-delay: 250ms;
+}
+.dot:nth-child(3) {
+  animation-delay: 500ms;
+}
 </style>

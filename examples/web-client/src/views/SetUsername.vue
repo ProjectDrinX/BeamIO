@@ -4,17 +4,18 @@ import socket, { Schemes } from '../net';
 
 <template>
   <form @submit="setUsername">
-    <input type="text" placeholder="Username" v-model="username" required>
+    <input type="text" placeholder="Username" v-model="username" required/>
   </form>
 </template>
 
 <script lang="ts">
 export default {
-  data: () => ({
-    username: '',
-  }) as {
-    username: string,
-  },
+  data: () =>
+    ({
+      username: '',
+    } as {
+      username: string;
+    }),
 
   mounted() {
     this.username = localStorage.getItem('username') ?? '';
@@ -35,11 +36,14 @@ export default {
       }
 
       localStorage.setItem('username', this.username);
-      localStorage.setItem('color', JSON.stringify({
-        r: Math.floor(Math.random() * 256),
-        g: Math.floor(Math.random() * 256),
-        b: Math.floor(Math.random() * 256),
-      }));
+      localStorage.setItem(
+        'color',
+        JSON.stringify({
+          r: Math.floor(Math.random() * 256),
+          g: Math.floor(Math.random() * 256),
+          b: Math.floor(Math.random() * 256),
+        }),
+      );
 
       socket.emit('setUsername', {
         username: this.username,
@@ -48,7 +52,7 @@ export default {
       this.$router.push({ path: '/' });
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -70,8 +74,10 @@ input {
   font-size: 30px;
   padding: 5px 0px;
   background-color: transparent;
-  border-bottom: 6px solid #FFFFFF;
+  border-bottom: 6px solid #ffffff;
 }
 
-input:focus { border-bottom-width: 4px; }
+input:focus {
+  border-bottom-width: 4px;
+}
 </style>

@@ -6,64 +6,73 @@ import socket, { Schemes } from './net';
 
 <template>
   <Loader v-if="loading" :message="loading"/>
-  <RouterView :messages="messages" :users="users" :user="user" :settings="settings"/>
+  <RouterView
+    :messages="messages"
+    :users="users"
+    :user="user"
+    :settings="settings"
+  />
 </template>
 
 <script lang="ts">
 export interface Color {
-  r: number,
-  g: number,
-  b: number,
+  r: number;
+  g: number;
+  b: number;
 }
 
 export interface Settings {
-  bgColor: Color,
+  bgColor: Color;
 }
 
 export interface User {
-  username: string,
-  color: Color,
-  isWriting?: boolean,
-  latency?: number,
+  username: string;
+  color: Color;
+  isWriting?: boolean;
+  latency?: number;
 }
 
 type UID = number;
-export interface Users { [uUID: UID]: User };
+export interface Users {
+  [uUID: UID]: User;
+}
 
 export interface Message {
-  sender: UID,
-  message: string,
+  sender: UID;
+  message: string;
 }
 
 export default {
-  data: () => ({
-    loading: 'Creating BeamIO endpont...',
+  data: () =>
+    ({
+      loading: 'Creating BeamIO endpont...',
 
-    user: {
-      username: localStorage.getItem('username') ?? '',
-      color: JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
-        r: Math.floor(Math.random() * 256),
-        g: Math.floor(Math.random() * 256),
-        b: Math.floor(Math.random() * 256),
+      user: {
+        username: localStorage.getItem('username') ?? '',
+        color: JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
+          r: Math.floor(Math.random() * 256),
+          g: Math.floor(Math.random() * 256),
+          b: Math.floor(Math.random() * 256),
+        },
       },
-    },
-    settings: {
-      bgColor: { r: 24, g: 24, b: 24 },
-    },
-    users: {},
-    messages: [],
-  }) as {
-    loading: string,
-    user: User,
-    settings: Settings,
-    users: Users,
-    messages: Message[],
-  },
+      settings: {
+        bgColor: { r: 24, g: 24, b: 24 },
+      },
+      users: {},
+      messages: [],
+    } as {
+      loading: string;
+      user: User;
+      settings: Settings;
+      users: Users;
+      messages: Message[];
+    }),
 
   beforeCreate() {
     socket.on('connect', () => {
       const username = localStorage.getItem('username');
-      if (username) socket.emit('setUsername', { username } as typeof Schemes.setUsername);
+      if (username)
+        socket.emit('setUsername', { username } as typeof Schemes.setUsername);
 
       const color = JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
         r: Math.floor(Math.random() * 256),
@@ -91,9 +100,12 @@ export default {
       };
     });
 
-    socket.on('changeBackgroundColor', (data: typeof Schemes.changeBackgroundColor) => {
-      this.settings.bgColor = data;
-    });
+    socket.on(
+      'changeBackgroundColor',
+      (data: typeof Schemes.changeBackgroundColor) => {
+        this.settings.bgColor = data;
+      },
+    );
 
     socket.on('messageEvent', (data: typeof Schemes.messageEvent) => {
       this.users[data.sender].isWriting = false;
@@ -106,7 +118,7 @@ export default {
 
     socket.on('userLatency', (data: typeof Schemes.userLatency) => {
       this.users[data.uUID].latency = data.latency;
-    })
+    });
 
     socket.on('userRenamed', (data: typeof Schemes.userRenamed) => {
       this.users[data.uUID].username = data.username;
@@ -127,13 +139,10 @@ export default {
 
   watch: {
     ['settings.bgColor']() {
-      document.body.style.backgroundColor = `rgb(${
-        this.settings.bgColor.r},${
-        this.settings.bgColor.g},${
-        this.settings.bgColor.b})`;
+      document.body.style.backgroundColor = `rgb(${this.settings.bgColor.r},${this.settings.bgColor.g},${this.settings.bgColor.b})`;
     },
   },
-}
+};
 </script>
 
 <style>
@@ -162,18 +171,29 @@ body * {
 }
 
 *:not(input),
-input[type=submit] { user-select: none }
+input[type='submit'] {
+  user-select: none;
+}
 
 input {
   outline: none;
   border: none;
 }
 
-::placeholder { color: #cacaca }
+::placeholder {
+  color: #cacaca;
+}
 
-::-webkit-scrollbar { width: 10px }
-::-webkit-scrollbar-track { background: #ffffff14 }
-::-webkit-scrollbar-thumb { background: #ffffff09 }
-::-webkit-scrollbar-thumb:hover { background: #ffffff14 }
-
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #ffffff14;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffffff09;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff14;
+}
 </style>

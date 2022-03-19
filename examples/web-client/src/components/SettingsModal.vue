@@ -3,9 +3,9 @@ import type { User, Settings, Color } from '../App.vue';
 import socket, { Schemes } from '../net';
 
 defineProps<{
-  user: User,
-  settings: Settings,
-  open: boolean,
+  user: User;
+  settings: Settings;
+  open: boolean;
 }>();
 </script>
 
@@ -13,11 +13,11 @@ defineProps<{
   <div class="modal" :class="{ open }">
     <div class="item">
       <div>User color</div>
-      <input type="color" v-model="uColor">
+      <input type="color" v-model="uColor"/>
     </div>
     <div class="item">
       <div>Background color</div>
-      <input type="color" v-model="bgColor">
+      <input type="color" v-model="bgColor"/>
     </div>
     <div class="bigButton" @click="$router.push('/setUsername')">
       Change username
@@ -27,15 +27,16 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  data: () => ({
-    uColor: '',
-    bgColor: '',
-    lastPush: Date.now(),
-  }) as {
-    uColor: string,
-    bgColor: string,
-    lastPush: number,
-  },
+  data: () =>
+    ({
+      uColor: '',
+      bgColor: '',
+      lastPush: Date.now(),
+    } as {
+      uColor: string;
+      bgColor: string;
+      lastPush: number;
+    }),
 
   mounted() {
     this.uColor = this.toHex(this.user.color);
@@ -105,7 +106,9 @@ export default {
   row-gap: 10px;
 }
 
-.modal.open { right: 11px }
+.modal.open {
+  right: 11px;
+}
 
 .item {
   display: flex;
@@ -120,7 +123,7 @@ export default {
   cursor: pointer;
 }
 
-input[type=color] {
+input[type='color'] {
   padding: 0;
   background-color: transparent;
 }

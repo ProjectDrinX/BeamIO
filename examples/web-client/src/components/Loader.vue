@@ -1,14 +1,29 @@
 <script setup lang="ts">
 defineProps<{
-  message: string,
+  message: string;
 }>();
 </script>
 
 <template>
   <div class="loader">
     <svg viewBox="0 0 100 100">
-      <circle fill="none" stroke="#aaa" stroke-width="4" cx="50" cy="50" r="44" style="opacity:0.5;"/>
-      <circle fill="#aaa" stroke="#181818" stroke-width="3" cx="8" cy="54" r="6" >
+      <circle
+        fill="none"
+        stroke="#aaa"
+        stroke-width="4"
+        cx="50"
+        cy="50"
+        r="44"
+        style="opacity: 0.5"
+      />
+      <circle
+        fill="#aaa"
+        stroke="#181818"
+        stroke-width="3"
+        cx="8"
+        cy="54"
+        r="6"
+      >
         <animateTransform
           attributeName="transform"
           dur="2s"
@@ -23,9 +38,7 @@ defineProps<{
   </div>
 </template>
 
-<script lang="ts">
-
-</script>
+<script lang="ts"></script>
 
 <style scoped>
 .loader {
@@ -45,6 +58,10 @@ defineProps<{
   row-gap: 30px;
 }
 
-svg { height: 80px }
-svg * { transition-duration: initial }
+svg {
+  height: 80px;
+}
+svg * {
+  transition-duration: initial;
+}
 </style>
