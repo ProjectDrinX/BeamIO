@@ -4,9 +4,7 @@
   "description": "Example of BeamIO server",
   "main": "main.js",
   "scripts": {
-    "test": "ts-node main",
-    "build": "tsc",
-    "run": "node main"
+    "test": "ts-node main"
   },
   "keywords": [
     "BeamIO",
