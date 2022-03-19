@@ -32,7 +32,7 @@ jobs:
 
       - name: Install PM2
         working-directory: ./examples/server
-        run: npm i pm2
+        run: yarn add pm2
 
       - name: Deploy
         working-directory: ./examples/server
