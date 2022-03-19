@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import socket, { Schemes } from './net';
+import './net';
 
 // @ts-ignore
 const app = createApp(App);

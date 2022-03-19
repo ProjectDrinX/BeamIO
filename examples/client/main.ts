@@ -1,4 +1,4 @@
-import BeamClient from 'beamio/client';
+import BeamClient from 'beamio/Client';
 import * as Schemes from 'beamio-example-schemes';
 
 const Client = new BeamClient(Schemes, {

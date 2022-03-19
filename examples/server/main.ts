@@ -1,4 +1,4 @@
-import BeamServer from 'beamio/server';
+import BeamServer from 'beamio/Server';
 import * as Schemes from 'beamio-example-schemes';
 
 const BS = new BeamServer(Schemes, {
