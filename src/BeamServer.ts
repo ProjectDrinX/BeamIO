@@ -35,11 +35,11 @@ export default class {
 
   private endpoints: { [k: number]: BeamEndpoint } = {};
 
-  constructor(Schemes: DeepSchemes, Config: BeamServerConfig) {
+  constructor(Schemes: DeepSchemes, Config: BeamServerConfig = {}) {
     this.Engine = new Engine(Schemes, Config.engineOptions ?? {});
 
-    const WSConfig = Config.socketServerOptions || {};
-    WSConfig.port = Config.port;
+    const WSConfig = Config.socketServerOptions ?? {};
+    WSConfig.port = Config.port ?? 8310;
     console.log('Creating server', WSConfig);
 
     this.SocketServer = new WebSocketServer(WSConfig);
