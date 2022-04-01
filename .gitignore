@@ -1,11 +1,9 @@
-logs
+.vscode/
+node_modules/
+
+.env
 *.log
 *.key
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-build/Release
-node_modules/
-dist/
-.vscode
-.env

@@ -1,14 +1,15 @@
 *.log
 *.key
-# *.ts
-node_modules/
-examples/
+*.ts
+
+.vscode/
+.github/
 benchmarks/
-# src/
-# .github/
-# .vscode/
-# .eslintrc.js
+examples/
+node_modules/
+src/
+tests/
+
 .env
-# tsconfig.json
-package-lock.json
-yarn.lock
+.eslintrc.js
+tsconfig.json

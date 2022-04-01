@@ -2,7 +2,7 @@
   "name": "beamio",
   "version": "0.0.0",
   "description": "Fastest web-friendly networking library",
-  "main": "./main.ts",
+  "main": "dist/main.js",
   "scripts": {
     "build": "yarn test && echo Compiling... && tsc && echo Compilation done !",
     "test": "ts-node test"
