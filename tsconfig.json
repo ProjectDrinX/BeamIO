@@ -100,9 +100,6 @@
   },
   "include": [
     "./src",
-    "./main.ts",
-    "./Server.ts",
-    "./Client.ts",
-    "./WebClient.ts"
+    "./main.ts"
   ]
 }

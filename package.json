@@ -4,7 +4,7 @@
   "description": "Fastest web-friendly networking library",
   "main": "dist/main.js",
   "scripts": {
-    "build": "yarn test && echo Compiling... && tsc && echo Compilation done !",
+    "build": "yarn test && echo Compiling... && rm -fr dist/ && tsc && echo Compilation done !",
     "test": "ts-node test"
   },
   "repository": {
