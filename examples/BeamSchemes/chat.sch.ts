@@ -1,4 +1,4 @@
-import { Type } from 'beamio';
+import Type from 'beamio/Types';
 
 /** By the client to send a message */
 export const sendMessage = {

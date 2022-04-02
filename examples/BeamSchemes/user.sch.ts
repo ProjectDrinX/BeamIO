@@ -1,4 +1,4 @@
-import { Type } from 'beamio';
+import Type from 'beamio/Types';
 
 /** By the server to notify that a user has logged in */
 export const userConnected = {

@@ -1,5 +1,5 @@
 import encoder from './encoder';
-import { Type } from '../main';
+import Type from './types';
 
 type TType = (string | number | boolean);
 type Value = (string | number | boolean);

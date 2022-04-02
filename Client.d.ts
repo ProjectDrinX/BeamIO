@@ -1,2 +1,2 @@
-import BeamClient from './dist/src/BeamClient';
+import BeamClient from './dist/BeamClient';
 export default BeamClient;

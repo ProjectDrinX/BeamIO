@@ -1,2 +1,2 @@
-import BeamServer from './dist/src/BeamServer';
+import BeamServer from './dist/BeamServer';
 export default BeamServer;

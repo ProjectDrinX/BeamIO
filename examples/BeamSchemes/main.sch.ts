@@ -1,4 +1,4 @@
-import { Type } from '../../main';
+import Type from 'beamio/Types';
 
 /** By the server or the client to measure latency */
 export const ping = {};

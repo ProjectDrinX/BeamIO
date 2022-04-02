@@ -1,15 +1,12 @@
 *.log
 *.key
-*.ts
 
 .vscode/
 .github/
 benchmarks/
 examples/
 node_modules/
-src/
 tests/
 
 .env
 .eslintrc.js
-tsconfig.json

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const encoder_1 = __importDefault(require("./encoder"));
-const main_1 = require("../main");
+const types_1 = __importDefault(require("./types"));
 function genParserStep(scheme, types, counter, getter = false) {
     let str = '';
     const deep = {};
@@ -54,7 +54,7 @@ function genStamper(scheme = {}) {
             deepS[k] = scheme[k];
         else
             code += `yield[${scheme[k]},v.${k}];`;
-        if (!hasBool && scheme[k] === main_1.Type.Boolean)
+        if (!hasBool && scheme[k] === types_1.default.Boolean)
             hasBool = true;
     }
     while (Object.keys(deepS).length !== 0) {
@@ -64,7 +64,7 @@ function genStamper(scheme = {}) {
                     deepS[`${k}.${k2}`] = deepS[k][k2];
                 else
                     code += `yield[${deepS[k][k2]},v.${k}.${k2}];`;
-                if (!hasBool && deepS[k][k2] === main_1.Type.Boolean)
+                if (!hasBool && deepS[k][k2] === types_1.default.Boolean)
                     hasBool = true;
             }
             delete deepS[k];
@@ -88,10 +88,10 @@ class CompiledScheme {
         const bools = [];
         for (const chunk of stamper) {
             switch (chunk[0]) {
-                case main_1.Type.Boolean:
+                case types_1.default.Boolean:
                     bools.push(chunk[1]);
                     break;
-                case main_1.Type.Number:
+                case types_1.default.Number:
                     yield encoder_1.default.number.encode(chunk[1]);
                     break;
                 default:
@@ -105,7 +105,7 @@ class CompiledScheme {
         const bools = (this.hasBool ? chunks[chunks.length - 1] : '');
         for (const i in chunks) {
             // eslint-disable-next-line no-param-reassign
-            if (this.types[i] === main_1.Type.Number)
+            if (this.types[i] === types_1.default.Number)
                 chunks[i] = encoder_1.default.number.decode(chunks[i]);
         }
         return this.parser(chunks, encoder_1.default.boolList.decode(bools));
