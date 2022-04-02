@@ -15,10 +15,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install BeamIO dependencies
         run: yarn install --frozen-lockfile
-      - name: Install 'BeamSchemes' example dependencies
-        run: cd examples/BeamSchemes && yarn
-      - name: Install 'web-client' example dependencies
-        run: cd examples/web-client && yarn
 
       - name: Build BeamIO
         run: yarn build
@@ -86,16 +82,20 @@ jobs:
       - run: yarn
       - run: cd examples/BeamSchemes && yarn
       - run: cd examples/web-client && yarn && yarn build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        if: github.event_name != 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
         with:
           entryPoint: examples/web-client/
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_IRIDIUM_BLAST }}'
           channelId: live
           projectId: iridium-blast
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        if: github.event_name != 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: Deploy to Firebase Hosting (preview mode)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         with:
           entryPoint: examples/web-client/
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
