@@ -18,8 +18,6 @@ jobs:
 
       - name: Build BeamIO
         run: yarn build
-      - name: Build 'web-client' example
-        run: cd examples/web-client && yarn build
 
       - name: Run BeamIO tests
         run: yarn test
