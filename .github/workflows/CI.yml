@@ -9,7 +9,6 @@ on:
 jobs:
   install:
     name: Install dependencies
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -58,7 +57,7 @@ jobs:
     name: Deploy 'server' example to Iridium cloud
     runs-on: ubuntu-latest
     needs: [tests]
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
     # working-directory: ./examples/server
     steps:
       - uses: actions/checkout@v2
@@ -93,11 +92,11 @@ jobs:
 
   publish_webclient:
     name: Publish 'web-client' example
-    needs: [build]
+    needs: [tests]
     runs-on: ubuntu-latest
     steps:
       - uses: FirebaseExtended/action-hosting-deploy@v0
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         with:
           entryPoint: examples/web-client/
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -105,7 +104,7 @@ jobs:
           channelId: live
           projectId: iridium-blast
       - uses: FirebaseExtended/action-hosting-deploy@v0
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
         with:
           entryPoint: examples/web-client/
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
