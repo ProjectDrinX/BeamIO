@@ -1,2 +1,2 @@
-import BeamClient from 'beamio/dist/src/BeamClient';
+import BeamClient from './dist/src/BeamClient';
 export default BeamClient;

@@ -1,2 +1,2 @@
-import BeamServer from 'beamio/dist/src/BeamServer';
+import BeamServer from './dist/src/BeamServer';
 export default BeamServer;
