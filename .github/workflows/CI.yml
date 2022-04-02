@@ -26,12 +26,12 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
       - name: Commit built BeamIO
-        run: git add ./dist -A && git commit -m "AutoBuild BeamIO" -a  || echo "No changes"
+        run: git add -A && git commit -m "AutoBuild BeamIO" -a  || echo "No changes"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          branch: ${{ github.head_ref || github.ref_name }}
 
   deploy_server:
     name: Deploy 'server' example to Iridium cloud
@@ -96,8 +96,10 @@ jobs:
       - name: Deploy to Firebase Hosting (preview mode)
         uses: FirebaseExtended/action-hosting-deploy@v0
         if: |
-          github.ref_name != 'main'
-          || (
+          (
+            github.event_name == 'push'
+            && github.ref_name != 'main'
+          ) || (
             github.event_name == 'pull_request'
             && github.event.pull_request.head.repo.full_name == github.repository
           )
