@@ -77,9 +77,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
-      - run: cd examples/BeamSchemes && yarn
-      - run: cd examples/web-client && yarn && yarn build
+      - name: Install BeamIO dependencies
+        run: yarn
+      - name: Instal BeamSchemes dependencies
+        run: cd examples/BeamSchemes && yarn
+      - name: Install WebClient dependencies + Build WebClient
+        run: cd examples/web-client && yarn && yarn build
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
