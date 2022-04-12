@@ -79,6 +79,7 @@ class Protocol {
       if (!first) rs += this.config.CHAR_MAIN_SEP;
       else first = false;
 
+      if (typeof str !== 'string') continue;
       let i = str.indexOf(this.config.CHAR_ESCAPE);
 
       while (i !== -1) {
