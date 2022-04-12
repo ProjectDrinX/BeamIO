@@ -1,6 +1,6 @@
-import BeamEndpoint from './BeamEndpoint';
 import type { ClientOptions as WSOptions } from 'ws';
 import type { DeepSchemes, EngineConfig, SchemeID } from './engine';
+import BeamEndpoint from './BeamEndpoint';
 interface BeamClientConfig {
     /** Server hostname */
     host: string;

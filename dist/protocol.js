@@ -64,6 +64,8 @@ class Protocol {
                 rs += this.config.CHAR_MAIN_SEP;
             else
                 first = false;
+            if (typeof str !== 'string')
+                continue;
             let i = str.indexOf(this.config.CHAR_ESCAPE);
             while (i !== -1) {
                 str = `${str.substring(0, i)}${this.config.CHAR_ESCAPE}${str.slice(i)}`;
