@@ -5,13 +5,15 @@ import socket, { Schemes } from './net';
 </script>
 
 <template>
-  <Loader v-if="loading" :message="loading"/>
-  <RouterView
-    :messages="messages"
-    :users="users"
-    :user="user"
-    :settings="settings"
-  />
+  <div>
+    <Loader v-if="loading" :message="loading"/>
+    <RouterView
+      :messages="messages"
+      :users="users"
+      :user="user"
+      :settings="settings"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -165,7 +167,7 @@ body * {
   transition-duration: 50ms;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: none;
+  appearance: none;
   text-shadow: 0 0 2px #00000020;
 }
 

@@ -4,7 +4,8 @@
   "description": "Example of BeamIO server",
   "main": "main.js",
   "scripts": {
-    "test": "ts-node main"
+    "start": "ts-node main",
+    "dev": "nodemon main.ts"
   },
   "keywords": [
     "BeamIO",
@@ -15,5 +16,9 @@
   "dependencies": {
     "beamio": "link:../../",
     "beamio-example-schemes": "link:../BeamSchemes/"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1"
   }
 }

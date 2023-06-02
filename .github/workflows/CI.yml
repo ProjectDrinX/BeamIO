@@ -33,43 +33,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref || github.ref_name }}
 
-  deploy_server:
-    name: Deploy 'server' example to Iridium cloud
-    runs-on: ubuntu-latest
-    needs: [build_and_tests]
-    if: github.ref_name == 'main'
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up SSH
-        working-directory: ./examples/server
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$DEPLOY_PRIVATE_KEY" > ./deploy.key
-          sudo chmod 600 ./deploy.key
-          echo "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-        shell: bash
-        env:
-          DEPLOY_PRIVATE_KEY: ${{secrets.DEPLOY_PRIVATE_KEY}}
-          DEPLOY_KNOWN_HOSTS: ${{secrets.DEPLOY_KNOWN_HOSTS}}
-
-      - name: Create env file
-        working-directory: ./examples/server
-        run: |
-          touch .env
-          echo DEPLOY_SERVER_HOST=${{ secrets.DEPLOY_SERVER_HOST }} >> .env
-          echo DEPLOY_SERVER_PORT=${{ secrets.DEPLOY_SERVER_PORT }} >> .env
-          echo DEPLOY_SERVER_USER=${{ secrets.DEPLOY_SERVER_USER }} >> .env
-          echo DEPLOY_SERVER_PATH=${{ secrets.DEPLOY_SERVER_PATH }} >> .env
-
-      - name: Install PM2
-        working-directory: ./examples/server
-        run: yarn global add pm2
-
-      - name: Deploy
-        working-directory: ./examples/server
-        run: env $(cat .env | grep -v \"#\" | xargs) pm2 deploy ecosystem.config.js production
-
   publish_webclient:
     name: Publish 'web-client' example
     needs: [build_and_tests]
