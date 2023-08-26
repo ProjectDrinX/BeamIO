@@ -2,19 +2,18 @@
 /* eslint-disable no-unused-vars */
 import type { WebSocket } from 'ws';
 import type Engine from './engine';
-import type { Packet, SchemeID } from './engine';
-import type { DeepObject } from './CompiledScheme';
+import type { Packet, SchemeID, DeepSchemes } from './engine';
 
-export default class BeamEndpoint {
+export default class BeamEndpoint<Schemes extends DeepSchemes> {
   socket: WebSocket;
 
-  private Engine: Engine;
+  private Engine: Engine<Schemes>;
 
   protected callbacks: { [e: SchemeID]: Function[] } = {
     disconnect: [],
   };
 
-  constructor(engine: Engine, socket: WebSocket) {
+  constructor(engine: Engine<Schemes>, socket: WebSocket) {
     this.Engine = engine;
     this.socket = socket;
   }
@@ -40,7 +39,10 @@ export default class BeamEndpoint {
   }
 
   /** When the client sends data */
-  on(event: string, callback: (data: any) => void): void;
+  on<SchemeName extends keyof Schemes>(
+    event: SchemeName,
+    callback: (data: Schemes[SchemeName]) => void,
+  ): void;
 
   /** When the client disconnects */
   on(event: 'disconnect', callback: (e: CloseEvent) => void): void;
@@ -61,13 +63,16 @@ export default class BeamEndpoint {
    * @param event Request ID
    * @param data Data
    */
-  emit(event: string, data: DeepObject): Promise<void> {
+  emit<SchemeName extends keyof Schemes>(
+    event: SchemeName,
+    data: Schemes[SchemeName],
+  ): Promise<void> {
     return new Promise((cb, er) => {
       if (!this.socket) {
         er(new Error('No socket'));
         return;
       }
-      this.socket.send(this.Engine.serialize(event, data), (err) => {
+      this.socket.send(this.Engine.serialize(event as string, data), (err) => {
         if (!err) cb(); else er(err);
       });
     });

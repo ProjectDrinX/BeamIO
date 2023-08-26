@@ -26,25 +26,25 @@ export interface EngineConfig {
   protocolConfig?: ProtocolConfig,
 }
 
-export default class {
+export default class BeamEngine<Schemes extends DeepSchemes> {
   private schemeHashes: SchemeHashes = {};
 
   private schemes: DeclaredSchemes = {};
 
   private protocol: Protocol;
 
-  constructor(Schemes: DeepSchemes, Config: EngineConfig = {}) {
-    this.protocol = new Protocol(Config.protocolConfig);
+  constructor(schemes: Schemes, config: EngineConfig = {}) {
+    this.protocol = new Protocol(config.protocolConfig);
 
-    const SchemeIDs = Object.keys(Schemes).sort((a, b) => a.localeCompare(b));
+    const SchemeIDs = Object.keys(schemes).sort((a, b) => a.localeCompare(b));
 
     let i = 0;
     for (const n in SchemeIDs) {
       const schemeID = SchemeIDs[n];
-      if (!Object.prototype.hasOwnProperty.call(Schemes, schemeID)) continue;
+      if (!Object.prototype.hasOwnProperty.call(schemes, schemeID)) continue;
       if (i >= 254) throw new Error('Reached scheme number limit');
       const hash: SchemeHash = String.fromCharCode(i);
-      const scheme = new CompiledScheme(schemeID, Schemes[schemeID]);
+      const scheme = new CompiledScheme(schemeID, schemes[schemeID]);
 
       this.schemeHashes[schemeID] = hash;
       this.schemes[hash] = scheme;

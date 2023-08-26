@@ -17,11 +17,11 @@ export interface Packet {
 export interface EngineConfig {
     protocolConfig?: ProtocolConfig;
 }
-export default class {
+export default class BeamEngine<Schemes extends DeepSchemes> {
     private schemeHashes;
     private schemes;
     private protocol;
-    constructor(Schemes: DeepSchemes, Config?: EngineConfig);
+    constructor(schemes: Schemes, config?: EngineConfig);
     isRegistered(schemeID: SchemeID): boolean;
     serialize(schemeID: SchemeID, data: DeepObject): string;
     parse(packet: Packet): Response;

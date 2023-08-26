@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import socket, { Schemes } from '../net';
+import socket from '../net';
 </script>
 
 <template>
   <form @submit="setUsername">
-    <input type="text" placeholder="Username" v-model="username" required/>
+    <input type="text" placeholder="Username" v-model="username" required />
   </form>
 </template>
 
@@ -53,7 +53,7 @@ export default {
 
       socket.emit('setUsername', {
         username: this.username,
-      } as typeof Schemes.setUsername);
+      });
 
       this.$router.push({ path: '/' });
     },

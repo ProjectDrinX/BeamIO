@@ -5,22 +5,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const protocol_1 = __importDefault(require("./protocol"));
 const CompiledScheme_1 = __importDefault(require("./CompiledScheme"));
-class default_1 {
+class BeamEngine {
     schemeHashes = {};
     schemes = {};
     protocol;
-    constructor(Schemes, Config = {}) {
-        this.protocol = new protocol_1.default(Config.protocolConfig);
-        const SchemeIDs = Object.keys(Schemes).sort((a, b) => a.localeCompare(b));
+    constructor(schemes, config = {}) {
+        this.protocol = new protocol_1.default(config.protocolConfig);
+        const SchemeIDs = Object.keys(schemes).sort((a, b) => a.localeCompare(b));
         let i = 0;
         for (const n in SchemeIDs) {
             const schemeID = SchemeIDs[n];
-            if (!Object.prototype.hasOwnProperty.call(Schemes, schemeID))
+            if (!Object.prototype.hasOwnProperty.call(schemes, schemeID))
                 continue;
             if (i >= 254)
                 throw new Error('Reached scheme number limit');
             const hash = String.fromCharCode(i);
-            const scheme = new CompiledScheme_1.default(schemeID, Schemes[schemeID]);
+            const scheme = new CompiledScheme_1.default(schemeID, schemes[schemeID]);
             this.schemeHashes[schemeID] = hash;
             this.schemes[hash] = scheme;
             i += 1;
@@ -48,4 +48,4 @@ class default_1 {
         };
     }
 }
-exports.default = default_1;
+exports.default = BeamEngine;

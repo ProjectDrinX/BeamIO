@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "build": "echo Compiling... && rm -fr dist/ && tsc && echo Compilation done !",
+    "dev": "tsc -w",
     "test": "ts-node test"
   },
   "repository": {

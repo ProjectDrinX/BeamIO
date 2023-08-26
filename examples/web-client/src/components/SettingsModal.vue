@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { User, Settings, Color } from '../App.vue';
-import socket, { Schemes } from '../net';
+import socket from '../net';
 
 defineProps<{
   user: User;
@@ -13,11 +13,11 @@ defineProps<{
   <div class="modal" :class="{ open }">
     <div class="item">
       <div>User color</div>
-      <input type="color" v-model="uColor"/>
+      <input type="color" v-model="uColor" />
     </div>
     <div class="item">
       <div>Background color</div>
-      <input type="color" v-model="bgColor"/>
+      <input type="color" v-model="bgColor" />
     </div>
     <div class="bigButton" @click="$router.push('/setUsername')">
       Change username
@@ -55,10 +55,7 @@ export default {
         b: this.toDec(this.uColor.slice(5, 7)),
       };
 
-      socket.emit(
-        'setUsernameColor',
-        this.user.color as typeof Schemes.setUsernameColor,
-      );
+      socket.emit('setUsernameColor', this.user.color);
 
       localStorage.setItem('color', JSON.stringify(this.user.color));
     },
@@ -74,10 +71,7 @@ export default {
         b: this.toDec(this.bgColor.slice(5, 7)),
       };
 
-      socket.emit(
-        'setBackgroundColor',
-        this.settings.bgColor as typeof Schemes.setBackgroundColor,
-      );
+      socket.emit('setBackgroundColor', this.settings.bgColor);
     },
   },
 

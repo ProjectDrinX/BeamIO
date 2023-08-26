@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import UserList from '../components/UserList.vue';
 import SettingsModal from '../components/SettingsModal.vue';
-import SendButton from '../components/icons/send.vue';
-import SettingsButton from '../components/icons/settings.vue';
+import SendButton from '../components/icons/sendIcon.vue';
+import SettingsButton from '../components/icons/settingsIcon.vue';
 import type { Settings, User, Users, Message } from '../App.vue';
-import socket, { Schemes } from '../net';
+import socket from '../net';
 
 defineProps<{
   messages: Message[];
@@ -26,14 +26,14 @@ defineProps<{
         {{ user.username }}
       </div>
     </div>
-    <SettingsButton @click="settingsOpen = !settingsOpen"/>
+    <SettingsButton @click="settingsOpen = !settingsOpen" />
   </div>
 
-  <UserList class="sidebar" :users="users"/>
+  <UserList class="sidebar" :users="users" />
 
   <div class="container">
     <div class="messages" ref="msgsContainer">
-      <div v-for="(msg, i) in messages">
+      <div v-for="(msg, i) in messages" :key="i">
         <div
           class="username"
           v-if="!messages[i - 1] || messages[i - 1].sender !== msg.sender"
@@ -64,15 +64,17 @@ defineProps<{
         @beforeinput="setWritingStatus"
         autofocus
       />
-      <SendButton class="sendButton" @click="sendMessage"/>
+      <SendButton class="sendButton" @click="sendMessage" />
     </form>
   </div>
 
-  <SettingsModal :user="user" :settings="settings" :open="settingsOpen"/>
+  <SettingsModal :user="user" :settings="settings" :open="settingsOpen" />
 </template>
 
 <script lang="ts">
 export default {
+  name: 'chat-view',
+
   data: () =>
     ({
       message: '',
@@ -89,7 +91,7 @@ export default {
 
   methods: {
     scrollDown(force = false) {
-      // @ts-ignore
+      // @ts-expect-error Refs are not typed
       const container: HTMLElement = this.$refs.msgsContainer;
 
       if (
@@ -110,7 +112,7 @@ export default {
 
       socket.emit('sendMessage', {
         message: this.message,
-      } as typeof Schemes.sendMessage);
+      });
 
       this.message = '';
       this.scrollDown(true);

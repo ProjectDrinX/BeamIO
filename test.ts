@@ -12,7 +12,7 @@ try {
   console.error(` > ${error}`);
   console.error(error);
   console.error('=======================================\n');
-  // @ts-ignore
+
   process.exit(1);
 }
 
@@ -24,7 +24,7 @@ try {
   console.error(` > ${error}`);
   console.error(error);
   console.error('=======================================\n');
-  // @ts-ignore
+
   process.exit(1);
 }
 
@@ -36,7 +36,7 @@ try {
   console.error(` > ${error}`);
   console.error(error);
   console.error('=======================================\n');
-  // @ts-ignore
+
   process.exit(1);
 }
 

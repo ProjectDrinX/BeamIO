@@ -54,7 +54,7 @@ function genParser(scheme: DeepScheme = {}, getter = false): [Parser, TType[]] {
   };
 
   const types: TType[] = [];
-  // @ts-ignore
+  // @ts-expect-error
   // eslint-disable-next-line no-new-func
   return [new Function('v', 'b', `return{${genParserStep(scheme, types, counter, getter)}}`), types];
 }

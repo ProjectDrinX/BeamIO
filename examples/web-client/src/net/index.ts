@@ -11,5 +11,3 @@ export default new BeamClient(
         ssl: false,
       },
 );
-
-export { Schemes };

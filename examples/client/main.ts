@@ -24,7 +24,7 @@ Client.on('connect', () => {
 
   Client.emit('setUsername', {
     username: 'BeamBot',
-  } as typeof Schemes.setUsername);
+  });
 });
 
 const messages = [
@@ -41,7 +41,7 @@ setInterval(() => {
   setTimeout(() => {
     Client.emit('sendMessage', {
       message: messages[i],
-    } as typeof Schemes.sendMessage);
+    });
 
     if (messages[i + 1]) i += 1; else i = 0;
   }, 2000);
@@ -53,28 +53,28 @@ setInterval(() => {
     r: Math.floor(Math.random() * 256),
     g: Math.floor(Math.random() * 256),
     b: Math.floor(Math.random() * 256),
-  } as typeof Schemes.setUsernameColor);
+  });
 }, 100);
 
-Client.on('messageEvent', (data: typeof Schemes.messageEvent) => {
+Client.on('messageEvent', (data) => {
   console.log(`[${users[data.sender].username}]: ${data.message}`);
 });
 
-Client.on('userChangeColor', (data: typeof Schemes.userChangeColor) => {
+Client.on('userChangeColor', (data) => {
   users[data.uUID].color = data.color;
 });
 
-Client.on('userConnected', (data: typeof Schemes.userConnected) => {
+Client.on('userConnected', (data) => {
   console.log(`User connected: '${data.username}' (${data.uUID}); Color:`, data.color);
   users[data.uUID] = data;
 });
 
-Client.on('userRenamed', (data: typeof Schemes.userRenamed) => {
+Client.on('userRenamed', (data) => {
   console.log(`User renamed: '${users[data.uUID].username}' (${data.uUID}) => '${data.username}'`);
   users[data.uUID].username = data.username;
 });
 
-Client.on('userDisconnected', (data: typeof Schemes.userDisconnected) => {
+Client.on('userDisconnected', (data) => {
   console.log(`User disconnected: ${data.uUID}`);
   delete users[data.uUID];
 });

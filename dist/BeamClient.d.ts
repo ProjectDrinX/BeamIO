@@ -19,10 +19,10 @@ interface BeamClientConfig {
     /** BeamEngine options */
     engineOptions?: EngineConfig;
 }
-export default class extends BeamEndpoint {
+export default class BeamClient<Schemes extends DeepSchemes> extends BeamEndpoint<Schemes> {
     protected callbacks: {
         [e: SchemeID]: Function[];
     };
-    constructor(Schemes: DeepSchemes, Config: BeamClientConfig);
+    constructor(schemes: Schemes, config: BeamClientConfig);
 }
 export {};

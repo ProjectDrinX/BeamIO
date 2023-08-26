@@ -39,7 +39,7 @@ function genParser(scheme = {}, getter = false) {
         incB() { this.b += 1; },
     };
     const types = [];
-    // @ts-ignore
+    // @ts-expect-error
     // eslint-disable-next-line no-new-func
     return [new Function('v', 'b', `return{${genParserStep(scheme, types, counter, getter)}}`), types];
 }

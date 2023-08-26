@@ -40,28 +40,28 @@ interface BeamClientConfig {
   engineOptions?: EngineConfig,
 }
 
-export default class extends BeamEndpoint {
+export default class BeamClient<Schemes extends DeepSchemes> extends BeamEndpoint<Schemes> {
   protected override callbacks: { [e: SchemeID]: Function[] } = {
     connect: [],
     disconnect: [],
   };
 
-  constructor(Schemes: DeepSchemes, Config: BeamClientConfig) {
-    // @ts-ignore
+  constructor(schemes: Schemes, config: BeamClientConfig) {
+    // @ts-expect-error WebSocket is not defined in NodeJS
     const WS: typeof WSType = (typeof window !== 'undefined') ? WebSocket : global.WebSocket;
 
-    const protocol = (Config.ssl === false) ? 'ws' : 'wss';
-    const port = Config.port ?? (Config.ssl === false ? 80 : 443);
-    const path = Config.path ?? '/';
+    const protocol = (config.ssl === false) ? 'ws' : 'wss';
+    const port = config.port ?? (config.ssl === false ? 80 : 443);
+    const path = config.path ?? '/';
 
     if (path[0] !== '/') throw new Error('Path must start with \'/\'');
 
-    const hostname = `${protocol}://${Config.host}:${port}${path}`;
-    console.log('Creating client', hostname, Config);
+    const hostname = `${protocol}://${config.host}:${port}${path}`;
+    console.log('Creating client', hostname, config);
 
     super(
-      new Engine(Schemes, Config.engineOptions ?? {}),
-      new WS(hostname, Config.socketClientOptions),
+      new Engine(schemes, config.engineOptions ?? {}),
+      new WS(hostname, config.socketClientOptions),
     );
 
     const onConnect = (OpenEvent: WSEvent) => {
@@ -84,13 +84,13 @@ export default class extends BeamEndpoint {
       this.socket.onclose = (CloseEvent) => {
         this.handleEvent('disconnect', CloseEvent);
 
-        if (Config.autoReconnect === false) return;
+        if (config.autoReconnect === false) return;
 
         setTimeout(() => {
           console.log('Auto reconnect...');
-          this.socket = new WS(hostname, Config.socketClientOptions);
+          this.socket = new WS(hostname, config.socketClientOptions);
           this.socket.onopen = onConnect;
-        }, Config.reconnectDelay ?? 5000);
+        }, config.reconnectDelay ?? 5000);
       };
     };
 

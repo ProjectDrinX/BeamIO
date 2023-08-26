@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = require("ws");
 const engine_1 = __importDefault(require("./engine"));
 const BeamEndpoint_1 = __importDefault(require("./BeamEndpoint"));
-class default_1 {
+class BeamServer {
     /** Socket Server instance */
     SocketServer;
     /** BeamEngine instance */
@@ -19,10 +19,10 @@ class default_1 {
     };
     lastEndpoint = 0;
     endpoints = {};
-    constructor(Schemes, Config = {}) {
-        this.Engine = new engine_1.default(Schemes, Config.engineOptions ?? {});
-        const WSConfig = Config.socketServerOptions ?? {};
-        WSConfig.port = Config.port ?? 8310;
+    constructor(schemes, config = {}) {
+        this.Engine = new engine_1.default(schemes, config.engineOptions ?? {});
+        const WSConfig = config.socketServerOptions ?? {};
+        WSConfig.port = config.port ?? 8310;
         console.log('Creating server', WSConfig);
         this.SocketServer = new ws_1.WebSocketServer(WSConfig);
         this.SocketServer.on('connection', (socket, req) => {
@@ -87,4 +87,4 @@ class default_1 {
         });
     }
 }
-exports.default = default_1;
+exports.default = BeamServer;

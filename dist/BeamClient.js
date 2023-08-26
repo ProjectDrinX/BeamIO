@@ -5,22 +5,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const engine_1 = __importDefault(require("./engine"));
 const BeamEndpoint_1 = __importDefault(require("./BeamEndpoint"));
-class default_1 extends BeamEndpoint_1.default {
+class BeamClient extends BeamEndpoint_1.default {
     callbacks = {
         connect: [],
         disconnect: [],
     };
-    constructor(Schemes, Config) {
-        // @ts-ignore
+    constructor(schemes, config) {
+        // @ts-expect-error WebSocket is not defined in NodeJS
         const WS = (typeof window !== 'undefined') ? WebSocket : global.WebSocket;
-        const protocol = (Config.ssl === false) ? 'ws' : 'wss';
-        const port = Config.port ?? (Config.ssl === false ? 80 : 443);
-        const path = Config.path ?? '/';
+        const protocol = (config.ssl === false) ? 'ws' : 'wss';
+        const port = config.port ?? (config.ssl === false ? 80 : 443);
+        const path = config.path ?? '/';
         if (path[0] !== '/')
             throw new Error('Path must start with \'/\'');
-        const hostname = `${protocol}://${Config.host}:${port}${path}`;
-        console.log('Creating client', hostname, Config);
-        super(new engine_1.default(Schemes, Config.engineOptions ?? {}), new WS(hostname, Config.socketClientOptions));
+        const hostname = `${protocol}://${config.host}:${port}${path}`;
+        console.log('Creating client', hostname, config);
+        super(new engine_1.default(schemes, config.engineOptions ?? {}), new WS(hostname, config.socketClientOptions));
         const onConnect = (OpenEvent) => {
             this.socket = OpenEvent.target;
             this.handleEvent('connect');
@@ -37,16 +37,16 @@ class default_1 extends BeamEndpoint_1.default {
             };
             this.socket.onclose = (CloseEvent) => {
                 this.handleEvent('disconnect', CloseEvent);
-                if (Config.autoReconnect === false)
+                if (config.autoReconnect === false)
                     return;
                 setTimeout(() => {
                     console.log('Auto reconnect...');
-                    this.socket = new WS(hostname, Config.socketClientOptions);
+                    this.socket = new WS(hostname, config.socketClientOptions);
                     this.socket.onopen = onConnect;
-                }, Config.reconnectDelay ?? 5000);
+                }, config.reconnectDelay ?? 5000);
             };
         };
         this.socket.onopen = onConnect;
     }
 }
-exports.default = default_1;
+exports.default = BeamClient;

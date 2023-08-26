@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Users } from '../App.vue';
-import UserIcon from './icons/user.vue';
-import Writing from './icons/writing.vue';
+import UserIcon from './icons/userIcon.vue';
+import Writing from './icons/writingIcon.vue';
 
 defineProps<{
   users: Users;
@@ -12,8 +12,8 @@ defineProps<{
   <div class="users">
     <div class="item" v-for="(user, k) in users" :key="k">
       <div>
-        <UserIcon v-if="!user.isWriting"/>
-        <Writing v-else/>
+        <UserIcon v-if="!user.isWriting" />
+        <Writing v-else />
         <div
           :style="{
             color: `rgb(${user.color.r}, ${user.color.g}, ${user.color.b})`,

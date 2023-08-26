@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import Loader from './components/Loader.vue';
-import socket, { Schemes } from './net';
+import socket from './net';
 </script>
 
 <template>
   <div>
-    <Loader v-if="loading" :message="loading"/>
+    <Loader v-if="loading" :message="loading" />
     <RouterView
       :messages="messages"
       :users="users"
@@ -45,35 +45,35 @@ export interface Message {
 }
 
 export default {
-  data: () => ({
-    loading: 'Creating BeamIO endpont...',
+  data: () =>
+    ({
+      loading: 'Creating BeamIO endpont...',
 
-    user: {
-      username: localStorage.getItem('username') ?? '',
-      color: JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
-        r: Math.floor(Math.random() * 256),
-        g: Math.floor(Math.random() * 256),
-        b: Math.floor(Math.random() * 256),
+      user: {
+        username: localStorage.getItem('username') ?? '',
+        color: JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
+          r: Math.floor(Math.random() * 256),
+          g: Math.floor(Math.random() * 256),
+          b: Math.floor(Math.random() * 256),
+        },
       },
-    },
-    settings: {
-      bgColor: { r: 24, g: 24, b: 24 },
-    },
-    users: {},
-    messages: [],
-  } as {
-    loading: string;
-    user: User;
-    settings: Settings;
-    users: Users;
-    messages: Message[];
-  }),
+      settings: {
+        bgColor: { r: 24, g: 24, b: 24 },
+      },
+      users: {},
+      messages: [],
+    } as {
+      loading: string;
+      user: User;
+      settings: Settings;
+      users: Users;
+      messages: Message[];
+    }),
 
   beforeCreate() {
     socket.on('connect', () => {
       const username = localStorage.getItem('username');
-      if (username)
-        socket.emit('setUsername', { username } as typeof Schemes.setUsername);
+      if (username) socket.emit('setUsername', { username });
 
       const color = JSON.parse(localStorage.getItem('color') ?? 'null') ?? {
         r: Math.floor(Math.random() * 256),
@@ -81,7 +81,7 @@ export default {
         b: Math.floor(Math.random() * 256),
       };
 
-      socket.emit('setUsernameColor', color as typeof Schemes.setUsernameColor);
+      socket.emit('setUsernameColor', color);
 
       this.loading = '';
     });
@@ -94,42 +94,39 @@ export default {
   mounted() {
     if (this.loading) this.loading = 'Connecting...';
 
-    socket.on('userConnected', (data: typeof Schemes.userConnected) => {
+    socket.on('userConnected', (data) => {
       this.users[data.uUID] = {
         username: data.username,
         color: data.color,
       };
     });
 
-    socket.on(
-      'changeBackgroundColor',
-      (data: typeof Schemes.changeBackgroundColor) => {
-        this.settings.bgColor = data;
-      },
-    );
+    socket.on('changeBackgroundColor', (data) => {
+      this.settings.bgColor = data;
+    });
 
-    socket.on('messageEvent', (data: typeof Schemes.messageEvent) => {
+    socket.on('messageEvent', (data) => {
       this.users[data.sender].isWriting = false;
       this.messages.push(data);
     });
 
-    socket.on('userWritingStatus', (data: typeof Schemes.userWritingStatus) => {
+    socket.on('userWritingStatus', (data) => {
       this.users[data.uUID].isWriting = data.status;
     });
 
-    socket.on('userLatency', (data: typeof Schemes.userLatency) => {
+    socket.on('userLatency', (data) => {
       this.users[data.uUID].latency = data.latency;
     });
 
-    socket.on('userRenamed', (data: typeof Schemes.userRenamed) => {
+    socket.on('userRenamed', (data) => {
       this.users[data.uUID].username = data.username;
     });
 
-    socket.on('userChangeColor', (data: typeof Schemes.userChangeColor) => {
+    socket.on('userChangeColor', (data) => {
       this.users[data.uUID].color = data.color;
     });
 
-    socket.on('userDisconnected', (data: typeof Schemes.userDisconnected) => {
+    socket.on('userDisconnected', (data) => {
       delete this.users[data.uUID];
     });
 

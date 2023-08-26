@@ -50,28 +50,25 @@ BS.on('connect', (client) => {
   users[uUID] = user;
   console.log(`User '${user.username}' connected !`);
 
-  client.emit(
-    'changeBackgroundColor',
-    settings.bgColor as typeof Schemes.changeBackgroundColor,
-  );
+  client.emit('changeBackgroundColor', settings.bgColor);
 
   for (const usrUID in users) {
     const usr = users[usrUID];
     client.emit('userConnected', {
-      // @ts-ignore
-      uUID: usrUID as number,
+      // @ts-expect-error
+      uUID: usrUID,
       username: usr.username,
       color: usr.color,
-    } as typeof Schemes.userConnected);
+    });
   }
 
   BS.broadcast('userConnected', {
     uUID,
     username: user.username,
     color: user.color,
-  } as typeof Schemes.userConnected);
+  });
 
-  client.on('setUsername', (data: typeof Schemes.setUsername) => {
+  client.on('setUsername', (data) => {
     const rlLen = data.username.replace(/[^0-z]/gi, '').length;
     if (rlLen === 0) {
       console.error(`User '${user.username}' set a too short username: ${rlLen} byte(s)`);
@@ -90,12 +87,12 @@ BS.on('connect', (client) => {
     BS.broadcast('userRenamed', {
       uUID,
       username: user.username,
-    } as typeof Schemes.userRenamed);
+    });
 
     console.log(`User '${user.username}' renamed to '${data.username}'`);
   });
 
-  client.on('setBackgroundColor', (data: typeof Schemes.setBackgroundColor) => {
+  client.on('setBackgroundColor', (data) => {
     if (!isColor(data)) {
       console.error(`User '${user.username}' set an invalid background color:`, data);
       return;
@@ -103,13 +100,10 @@ BS.on('connect', (client) => {
 
     settings.bgColor = data;
 
-    BS.broadcast(
-      'changeBackgroundColor',
-      settings.bgColor as typeof Schemes.changeBackgroundColor,
-    );
+    BS.broadcast('changeBackgroundColor', settings.bgColor);
   });
 
-  client.on('setUsernameColor', (data: typeof Schemes.setUsernameColor) => {
+  client.on('setUsernameColor', (data) => {
     if (!isColor(data)) {
       console.error(`User '${user.username}' set an invalid username color:`, data);
       return;
@@ -120,10 +114,10 @@ BS.on('connect', (client) => {
     BS.broadcast('userChangeColor', {
       uUID,
       color: user.color,
-    } as typeof Schemes.userChangeColor);
+    });
   });
 
-  client.on('sendMessage', (data: typeof Schemes.sendMessage) => {
+  client.on('sendMessage', (data) => {
     if (data.message.length > 1000) {
       console.error(
         `User '${user.username}' sent a too long message: ${data.message.length} bytes`,
@@ -134,7 +128,7 @@ BS.on('connect', (client) => {
     BS.broadcast('messageEvent', {
       sender: uUID,
       message: data.message,
-    } as typeof Schemes.messageEvent);
+    });
 
     console.log(`[${user.username}]: ${data.message}`);
   });
@@ -146,7 +140,7 @@ BS.on('connect', (client) => {
       BS.broadcast('userWritingStatus', {
         uUID,
         status: true,
-      } as typeof Schemes.userWritingStatus);
+      });
 
       console.log(`User '${user.username}' is writing...`);
     }
@@ -161,7 +155,7 @@ BS.on('connect', (client) => {
         BS.broadcast('userWritingStatus', {
           uUID,
           status: false,
-        } as typeof Schemes.userWritingStatus);
+        });
       }
     }, 3000);
   });
@@ -180,7 +174,7 @@ BS.on('connect', (client) => {
     BS.broadcast('userLatency', {
       uUID,
       latency,
-    } as typeof Schemes.userLatency);
+    });
 
     setTimeout(ping, 300);
   });
@@ -188,9 +182,7 @@ BS.on('connect', (client) => {
   ping();
 
   client.on('disconnect', (e) => {
-    BS.broadcast('userDisconnected', {
-      uUID,
-    } as typeof Schemes.userDisconnected);
+    BS.broadcast('userDisconnected', { uUID });
 
     delete users[uUID];
     console.log(`User '${user.username}' disconnected: '${e.reason}' (${e.code})`);

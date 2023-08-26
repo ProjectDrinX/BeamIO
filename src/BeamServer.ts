@@ -7,7 +7,6 @@ import type { ServerOptions as WSOptions } from 'ws';
 import Engine, { Packet } from './engine';
 import BeamEndpoint from './BeamEndpoint';
 import type { DeepSchemes, EngineConfig } from './engine';
-import { DeepObject } from './CompiledScheme';
 
 interface BeamServerConfig {
   /** Server port */
@@ -19,32 +18,31 @@ interface BeamServerConfig {
   /** BeamEngine options */
   engineOptions?: EngineConfig,
 }
-
-export default class {
+export default class BeamServer<Schemes extends DeepSchemes> {
   /** Socket Server instance */
   readonly SocketServer: WebSocketServer;
 
   /** BeamEngine instance */
-  readonly Engine: Engine;
+  readonly Engine: Engine<Schemes>;
 
-  private callbacks: { [e: string]: Function[] } = {
+  private callbacks: Record<string, Function[]> = {
     connect: [],
   };
 
   private lastEndpoint = 0;
 
-  private endpoints: { [k: number]: BeamEndpoint } = {};
+  private endpoints: { [k: number]: BeamEndpoint<Schemes> } = {};
 
-  constructor(Schemes: DeepSchemes, Config: BeamServerConfig = {}) {
-    this.Engine = new Engine(Schemes, Config.engineOptions ?? {});
+  constructor(schemes: Schemes, config: BeamServerConfig = {}) {
+    this.Engine = new Engine(schemes, config.engineOptions ?? {});
 
-    const WSConfig = Config.socketServerOptions ?? {};
-    WSConfig.port = Config.port ?? 8310;
+    const WSConfig = config.socketServerOptions ?? {};
+    WSConfig.port = config.port ?? 8310;
     console.log('Creating server', WSConfig);
 
     this.SocketServer = new WebSocketServer(WSConfig);
     this.SocketServer.on('connection', (socket, req) => {
-      const endpoint = new BeamEndpoint(this.Engine, socket);
+      const endpoint = new BeamEndpoint<Schemes>(this.Engine, socket);
 
       const endpointID = this.lastEndpoint;
       this.endpoints[endpointID] = endpoint;
@@ -89,7 +87,7 @@ export default class {
   }
 
   /** When a new client connects */
-  on(event: 'connect', callback: (client: BeamEndpoint, req: IncomingMessage) => void): void;
+  on(event: 'connect', callback: (client: BeamEndpoint<Schemes>, req: IncomingMessage) => void): void;
 
   on(event: string, callback: Function) {
     if (!this.callbacks[event]) throw new Error(`Unknown event name: '${event}'`);
@@ -101,9 +99,12 @@ export default class {
    * @param event Request ID
    * @param data Data
    */
-  broadcast(event: string, data: DeepObject): Promise<void> {
+  broadcast<SchemeName extends keyof Schemes>(
+    event: SchemeName,
+    data: Schemes[SchemeName],
+  ): Promise<void> {
     return new Promise((cb, er) => {
-      const serialized = this.Engine.serialize(event, data);
+      const serialized = this.Engine.serialize(event as string, data);
       for (const endpoint in this.endpoints) {
         if (this.endpoints[endpoint].socket.readyState !== 1) continue;
         this.endpoints[endpoint].socket.send(serialized, (err) => {

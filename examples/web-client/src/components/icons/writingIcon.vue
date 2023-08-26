@@ -1,8 +1,8 @@
 <template>
   <svg height="40" width="40">
-    <circle class="dot" cx="10" cy="20" r="3"/>
-    <circle class="dot" cx="20" cy="20" r="3"/>
-    <circle class="dot" cx="30" cy="20" r="3"/>
+    <circle class="dot" cx="10" cy="20" r="3" />
+    <circle class="dot" cx="20" cy="20" r="3" />
+    <circle class="dot" cx="30" cy="20" r="3" />
   </svg>
 </template>
 
