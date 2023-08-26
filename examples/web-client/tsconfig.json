@@ -1,16 +1,17 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-    }
+    },
+    "moduleResolution": "node",
   },
 
   "references": [
     {
-      "path": "./tsconfig.vite-config.json"
-    }
-  ]
+      "path": "./tsconfig.vite-config.json",
+    },
+  ],
 }

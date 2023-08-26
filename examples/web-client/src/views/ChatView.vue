@@ -3,8 +3,8 @@ import UserList from '../components/UserList.vue';
 import SettingsModal from '../components/SettingsModal.vue';
 import SendButton from '../components/icons/sendIcon.vue';
 import SettingsButton from '../components/icons/settingsIcon.vue';
-import type { Settings, User, Users, Message } from '../App.vue';
 import socket from '../net';
+import type { Settings, User, Users, Message } from '../App.vue';
 
 defineProps<{
   messages: Message[];
@@ -59,6 +59,7 @@ defineProps<{
     <form class="textbox" @submit="sendMessage">
       <input
         type="text"
+        ref="message"
         v-model="message"
         placeholder="Message"
         @beforeinput="setWritingStatus"
@@ -73,20 +74,19 @@ defineProps<{
 
 <script lang="ts">
 export default {
-  name: 'chat-view',
-
   data: () =>
     ({
       message: '',
       settingsOpen: false,
-    } as {
+    }) as {
       message: string;
       settingsOpen: boolean;
-    }),
+    },
 
   mounted() {
     this.scrollDown(true);
     this.user.username = localStorage.getItem('username') ?? '';
+    (this.$refs.message as HTMLInputElement).focus();
   },
 
   methods: {

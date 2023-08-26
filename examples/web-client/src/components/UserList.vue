@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Users } from '../App.vue';
 import UserIcon from './icons/userIcon.vue';
 import Writing from './icons/writingIcon.vue';
+import type { Users } from '../App.vue';
 
 defineProps<{
   users: Users;

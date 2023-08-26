@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import Loader from './components/Loader.vue';
+import LoaderComponent from './components/LoaderComponent.vue';
 import socket from './net';
 </script>
 
 <template>
   <div>
-    <Loader v-if="loading" :message="loading" />
+    <LoaderComponent v-if="loading" :message="loading" />
     <RouterView
       :messages="messages"
       :users="users"
@@ -62,13 +62,13 @@ export default {
       },
       users: {},
       messages: [],
-    } as {
+    }) as {
       loading: string;
       user: User;
       settings: Settings;
       users: Users;
       messages: Message[];
-    }),
+    },
 
   beforeCreate() {
     socket.on('connect', () => {

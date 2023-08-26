@@ -4,7 +4,14 @@ import socket from '../net';
 
 <template>
   <form @submit="setUsername">
-    <input type="text" placeholder="Username" v-model="username" required />
+    <input
+      type="text"
+      ref="username"
+      placeholder="Username"
+      v-model="username"
+      autofocus
+      required
+    />
   </form>
 </template>
 
@@ -13,12 +20,13 @@ export default {
   data: () =>
     ({
       username: '',
-    } as {
+    }) as {
       username: string;
-    }),
+    },
 
   mounted() {
     this.username = localStorage.getItem('username') ?? '';
+    (this.$refs.username as HTMLInputElement).focus();
   },
 
   methods: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { User, Settings, Color } from '../App.vue';
 import socket from '../net';
+import type { User, Settings, Color } from '../App.vue';
 
 defineProps<{
   user: User;
@@ -19,9 +19,7 @@ defineProps<{
       <div>Background color</div>
       <input type="color" v-model="bgColor" />
     </div>
-    <div class="bigButton" @click="$router.push('/setUsername')">
-      Change username
-    </div>
+    <div class="bigButton" @click="$router.push('/login')">Change username</div>
   </div>
 </template>
 
@@ -32,11 +30,11 @@ export default {
       uColor: '',
       bgColor: '',
       lastPush: Date.now(),
-    } as {
+    }) as {
       uColor: string;
       bgColor: string;
       lastPush: number;
-    }),
+    },
 
   mounted() {
     this.uColor = this.toHex(this.user.color);
